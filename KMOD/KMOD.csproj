@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="SPTarkov.DI">
+      <HintPath>..\..\..\..\..\Desktop\Build_new\net9.0\SPTarkov.DI.dll</HintPath>
+    </Reference>
+    <Reference Include="SPTarkov.Server">
+      <HintPath>..\..\..\..\..\Desktop\Build_new\net9.0\SPTarkov.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="SPTarkov.Server.Core">
+      <HintPath>..\..\..\..\..\Desktop\Build_new\net9.0\SPTarkov.Server.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
