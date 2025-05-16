@@ -19,6 +19,14 @@ using SPTarkov.Server.Core.Servers;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Spt.Server;
 using System.Threading;
+using System.Reflection;
+using System.Text.Json;
+using SPTarkov.Server.Core.Controllers;
+using SPTarkov.Server;
+using System.Runtime.InteropServices.JavaScript;
+using SPTarkov.Server.Core.Services.Image;
+using SPTarkov.Server.Core.Models.Common;
+
 
 public record MyModMetadata : AbstractModMetadata
 {
@@ -36,23 +44,14 @@ public record MyModMetadata : AbstractModMetadata
 	public override string? Licence { get; set; } = "MIT";
 }
 
-/*[Injectable]
-public class MyPostDBMod : IPostDBLoadMod
-{
-	void PostDBLoad()
-	{
-		// Ваша логика модификации базы данных
-		//System.Diagnostics.Debug.WriteLine( "-------MyPostDBMod loaded!" );
-		Console.WriteLine( "-------MyPostDBMod loaded!" );
-	}
-}*/
 
 [Injectable( TypePriority = OnLoadOrder.PostDBModLoader )]
 public class KMOD(
-//	ISptLogger<KMOD> logger,
+	ISptLogger<KMOD> logger,
 //	HashUtil hashUtil,
 	DatabaseService databaseService,
-	 ConfigServer _configServer
+	TraderController traderController,
+	ConfigServer _configServer
 ) : IOnLoad
 {
 	//_props - Properties
@@ -65,6 +64,7 @@ public class KMOD(
 		BotConfig botConfig = _configServer.GetConfig<BotConfig>();
 		SPTarkov.Server.Core.Models.Spt.Server.Locations locations = databaseService.GetLocations();
 		SPTarkov.Server.Core.Models.Spt.Hideout.Hideout hideout = databaseService.GetHideout();
+		TraderConfig traderConfig = _configServer.GetConfig<TraderConfig>();
 
 		// Возможность продавать биткоин на барахолке
 		items[ ItemTpl.BARTER_PHYSICAL_BITCOIN ].Properties.CanSellOnRagfair = true;
@@ -74,6 +74,7 @@ public class KMOD(
 
 		// У всех торговцев товар "найден в рейде"
 		//trader.purchasesAreFoundInRaid = true;
+		traderConfig.PurchasesAreFoundInRaid = true;
 
 		// Свой ник в списке имён ботов
 		//DB.getBots().types.bear[ "firstName" ].push( "Zloy Tapok" );
@@ -301,7 +302,10 @@ public class KMOD(
 				recipe.ProductionTime = 10;
 			}
 		}
-
+		///****************************************************************
+		///https://github.com/sp-tarkov/server-csharp/pull/251
+		// Сидорович
+		
 
 		//logger.Info( "	------------------------------End" );
 	}
@@ -309,5 +313,116 @@ public class KMOD(
 	public string GetRoute()
 	{
 		return "kmod";
+	}	
+}
+
+[Injectable( TypePriority = OnLoadOrder.TraderRegistration )]
+public record KTRADER_SIDR(
+	ImageRouterService imageRouter,
+	ConfigServer _configServer
+) : ICustomTrader
+{
+	public override string Name { get; } = "Sidr";
+	public override string Id { get; } = "6724f82d258d7a1328000001";
+	
+	public override TraderAssort? GetAssort()
+	{
+		var jsonPath = System.IO.Path.Combine( Directory.GetParent( Assembly.GetAssembly( typeof( KTRADER_SIDR ) ).Location ).FullName,
+			"Sidr\\assort.json" );
+		try
+		{
+
+			return JsonSerializer.Deserialize<TraderAssort>( File.ReadAllText( jsonPath ) );
+		}
+		catch( Exception ex )
+		{
+			Console.WriteLine( $"Ошибка чтения файла {jsonPath}: {ex.Message}" );
+			return null;
+		}
+	}
+
+	public override Dictionary<string, Dictionary<string, string>>? GetQuestAssort()
+	{
+		var jsonPath = System.IO.Path.Combine( Directory.GetParent( Assembly.GetAssembly( typeof( KTRADER_SIDR ) ).Location ).FullName,
+			"Sidr\\questassort.json" );
+		try
+		{
+
+			return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>( File.ReadAllText( jsonPath ) );
+		}
+		catch( Exception ex )
+		{
+			Console.WriteLine( $"Ошибка чтения файла {jsonPath}: {ex.Message}" );
+			return null;
+		}
+	}
+
+	public override TraderBase? GetBase()
+	{
+		var jsonPath = System.IO.Path.Combine( Directory.GetParent( Assembly.GetAssembly( typeof( KTRADER_SIDR ) ).Location ).FullName,
+			"Sidr\\base.json" );
+		try
+		{			
+			return JsonSerializer.Deserialize<TraderBase>( File.ReadAllText( jsonPath ) );
+		}
+		catch( Exception ex )
+		{
+			Console.WriteLine( $"Ошибка чтения файла {jsonPath}: {ex.Message}" );
+			return null;
+		}
+	}
+}
+
+[Injectable( TypePriority = OnLoadOrder.TraderRegistration )]
+public record KTRADER_MERCHANT : ICustomTrader
+{
+	public override string Name { get; } = "Sidr";
+	public override string Id { get; } = "6724f82d258d7a1328000002";
+
+	public override TraderAssort? GetAssort()
+	{
+		var jsonPath = System.IO.Path.Combine( Directory.GetParent( Assembly.GetAssembly( typeof( KTRADER_MERCHANT ) ).Location ).FullName,
+			"Merchant\\assort.json" );
+		try
+		{
+
+			return JsonSerializer.Deserialize<TraderAssort>( File.ReadAllText( jsonPath ) );
+		}
+		catch( Exception ex )
+		{
+			Console.WriteLine( $"Ошибка чтения файла {jsonPath}: {ex.Message}" );
+			return null;
+		}
+	}
+
+	public override Dictionary<string, Dictionary<string, string>>? GetQuestAssort()
+	{
+		var jsonPath = System.IO.Path.Combine( Directory.GetParent( Assembly.GetAssembly( typeof( KTRADER_MERCHANT ) ).Location ).FullName,
+			"Merchant\\questassort.json" );
+		try
+		{
+
+			return JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>( File.ReadAllText( jsonPath ) );
+		}
+		catch( Exception ex )
+		{
+			Console.WriteLine( $"Ошибка чтения файла {jsonPath}: {ex.Message}" );
+			return null;
+		}
+	}
+
+	public override TraderBase? GetBase()
+	{
+		var jsonPath = System.IO.Path.Combine( Directory.GetParent( Assembly.GetAssembly( typeof( KTRADER_MERCHANT ) ).Location ).FullName,
+			"Merchant\\base.json" );
+		try
+		{						
+			return JsonSerializer.Deserialize<TraderBase>( File.ReadAllText( jsonPath ) );
+		}
+		catch( Exception ex )
+		{
+			Console.WriteLine( $"Ошибка чтения файла {jsonPath}: {ex.Message}" );
+			return null;
+		}
 	}
 }
