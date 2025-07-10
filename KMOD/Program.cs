@@ -1,33 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
-//Console.WriteLine("Hello, World!");
-
-using SPTarkov.Server.Core.Models.Eft.Common.Tables;
-using SPTarkov.Server.Core.Models;
-using SPTarkov.Server.Core.Models.External;
+﻿using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Spt.Mod;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Helpers;
-using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Services;
-using SPTarkov.Server.Core.Utils.Cloners;
-using SPTarkov.Server.Core.Utils;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Enums;
-using System.Diagnostics;
-using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Servers;
 using SPTarkov.Server.Core.Models.Spt.Config;
-using SPTarkov.Server.Core.Models.Spt.Server;
-using System.Threading;
 using System.Reflection;
-using System.Text.Json;
-using SPTarkov.Server.Core.Controllers;
-using SPTarkov.Server;
-using System.Runtime.InteropServices.JavaScript;
-using SPTarkov.Server.Core.Services.Image;
 using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Routers;
-using SPTarkov.Server.Core.Models.Logging;
 
 namespace KMOD;
 
@@ -36,7 +17,7 @@ public record MyModMetadata : AbstractModMetadata
 	public override string? Name { get; set; } = "KMOD";
 	public override string? Author { get; set; } = "Krinkels";
 	public override List<string>? Contributors { get; set; } = new() { "", "" };
-	public override string? Version { get; set; } = "1.2.0";
+	public override string? Version { get; set; } = "1.3.0";
 	public override string? SptVersion { get; set; } = "4.0.0";
 	public override List<string>? LoadBefore { get; set; } = null;
 	public override List<string>? LoadAfter { get; set; } = null;
@@ -53,6 +34,7 @@ public class KMOD(
 	//HashUtil hashUtil,
 	DatabaseService databaseService,
 	//TraderController traderController,
+	ModHelper modHelper,
 	ConfigServer _configServer
 ) : IOnLoad
 {
@@ -308,9 +290,6 @@ public class KMOD(
 			}
 		}
 		///****************************************************************
-		///https://github.com/sp-tarkov/server-csharp/pull/251
-		// Сидорович
-
 
 		//logger.Info( "	------------------------------End" );
 
@@ -320,7 +299,7 @@ public class KMOD(
 
 [Injectable( TypePriority = OnLoadOrder.PostDBModLoader + 1 )]
 public class KTRADER_SIDR(
-	KTRADER TRADER // This is a custom class we add for this mod, we made it injectable so it can be accessed like other classes here
+	KTRADER TRADER
 ) : IOnLoad
 {	
 	public Task OnLoad()
@@ -332,7 +311,7 @@ public class KTRADER_SIDR(
 
 [Injectable( TypePriority = OnLoadOrder.PostDBModLoader + 1 )]
 public class KTRADER_MERCHANT(
-	KTRADER TRADER // This is a custom class we add for this mod, we made it injectable so it can be accessed like other classes here
+	KTRADER TRADER
 ) : IOnLoad
 {
 	public Task OnLoad()
@@ -341,6 +320,29 @@ public class KTRADER_MERCHANT(
 		return Task.CompletedTask;
 	}
 }
+
+// Свой собственный профиль
+[Injectable( TypePriority = OnLoadOrder.PostDBModLoader + 1 )]
+public class MY_PROFILE(
+	ModHelper modHelper,
+	DatabaseService databaseService
+) : IOnLoad
+{
+	public Task OnLoad()
+	{
+		Dictionary<string, ProfileSides> Profile = databaseService.GetProfileTemplates();
+
+		var pathToMod = modHelper.GetAbsolutePathToModFolder( Assembly.GetExecutingAssembly() );
+		var myProfile = modHelper.GetJsonDataFromFile<ProfileSides>( pathToMod, "Profile/Unheard.json" );
+
+		Profile.TryAdd( "Krinkels Unheard Profile", myProfile );
+
+		return Task.CompletedTask;
+	}
+}
+
+/**/
+
 /*
 [Injectable( TypePriority = OnLoadOrder.PostDBModLoader + 1 )]
 public record GIFT(

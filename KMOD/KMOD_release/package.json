@@ -1,0 +1,8 @@
+{
+    "Name": "KMOD",
+    "Version": "1.3.0",
+    "Licence": "GPL3",
+    "Author": "Krinkels",
+    "SptVersion": "~4.0",
+	"Url": "https://krinkels.org"
+}
