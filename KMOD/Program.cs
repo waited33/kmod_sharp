@@ -21,7 +21,7 @@ public record MyModMetadata : AbstractModMetadata
 	public override string? Name { get; set; } = "KMOD";
 	public override string? Author { get; set; } = "Krinkels";
 	public override List<string>? Contributors { get; set; } = new() { "", "" };
-	public override string? Version { get; set; } = "1.3.0";
+	public override string? Version { get; set; } = "1.4.0";
 	public override string? SptVersion { get; set; } = "4.0.0";
 	public override List<string>? LoadBefore { get; set; } = null;
 	public override List<string>? LoadAfter { get; set; } = null;
