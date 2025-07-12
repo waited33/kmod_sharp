@@ -1,0 +1,78 @@
+{
+  "id": "0816190346611352776e6e0a",
+  "name": "Wp 2",
+  "root": "61108be8b4aa37d2f8ac5043",
+  "items": [
+    {
+      "_id": "61108be8b4aa37d2f8ac5043",
+      "_tpl": "57dc2fa62459775949412633",
+      "upd": {
+        "Repairable": {
+          "MaxDurability": 100,
+          "Durability": 100
+        },
+        "Foldable": {
+          "Folded": true
+        },
+        "FireMode": {
+          "FireMode": "single"
+        }
+      }
+    },
+    {
+      "_id": "c292a2a55fca7e3dce9e0da2",
+      "_tpl": "5947f92f86f77427344a76b1",
+      "parentId": "61108be8b4aa37d2f8ac5043",
+      "slotId": "mod_pistol_grip"
+    },
+    {
+      "_id": "9c8b4ef88faa1281533daf54",
+      "_tpl": "57dc347d245977596754e7a1",
+      "parentId": "61108be8b4aa37d2f8ac5043",
+      "slotId": "mod_stock"
+    },
+    {
+      "_id": "9f42a45ad2a0066780a8cd56",
+      "_tpl": "5648ac824bdc2ded0b8b457d",
+      "parentId": "61108be8b4aa37d2f8ac5043",
+      "slotId": "mod_charge"
+    },
+    {
+      "_id": "1faf09eae2c7cbbdf60ec77c",
+      "_tpl": "55d482194bdc2d1d4e8b456b",
+      "parentId": "61108be8b4aa37d2f8ac5043",
+      "slotId": "mod_magazine"
+    },
+    {
+      "_id": "9341ba4e27bf7225e35c21a8",
+      "_tpl": "57dc324a24597759501edc20",
+      "parentId": "61108be8b4aa37d2f8ac5043",
+      "slotId": "mod_muzzle"
+    },
+    {
+      "_id": "5763047bcc22fabad502f113",
+      "_tpl": "57dc334d245977597164366f",
+      "parentId": "61108be8b4aa37d2f8ac5043",
+      "slotId": "mod_reciever"
+    },
+    {
+      "_id": "a37ebd8eb746dfe99c8f8d64",
+      "_tpl": "59d36a0086f7747e673f3946",
+      "parentId": "61108be8b4aa37d2f8ac5043",
+      "slotId": "mod_gas_block"
+    },
+    {
+      "_id": "2d8c31206b5adb29e4ac537b",
+      "_tpl": "57ffa9f4245977728561e844",
+      "parentId": "a37ebd8eb746dfe99c8f8d64",
+      "slotId": "mod_handguard"
+    },
+    {
+      "_id": "327d9812b0d3eb329f0cdcec",
+      "_tpl": "5c87ca002e221600114cb150",
+      "parentId": "2d8c31206b5adb29e4ac537b",
+      "slotId": "mod_foregrip"
+    }
+  ],
+  "Parent": "5447b5f14bdc2d61278b4567"
+}

@@ -1,0 +1,86 @@
+{
+  "id": "08161903467494310105309c",
+  "name": "wp 18",
+  "root": "2ab6f912312f9cc284ebc291",
+  "items": [
+    {
+      "_id": "2ab6f912312f9cc284ebc291",
+      "_tpl": "5a0ec13bfcdbcb00165aa685",
+      "upd": {
+        "Repairable": {
+          "MaxDurability": 100,
+          "Durability": 100
+        },
+        "FireMode": {
+          "FireMode": "single"
+        }
+      }
+    },
+    {
+      "_id": "29a83a5e733ad9e8e6cf1aa4",
+      "_tpl": "59d64ec286f774171d1e0a42",
+      "parentId": "2ab6f912312f9cc284ebc291",
+      "slotId": "mod_gas_block"
+    },
+    {
+      "_id": "3816be8d82a6b1b48f7dc955",
+      "_tpl": "5a9fbacda2750c00141e080f",
+      "parentId": "2ab6f912312f9cc284ebc291",
+      "slotId": "mod_muzzle"
+    },
+    {
+      "_id": "4a29f21bf0eb74eac0af1ecc",
+      "_tpl": "5b30ac585acfc433000eb79c",
+      "parentId": "2ab6f912312f9cc284ebc291",
+      "slotId": "mod_pistol_grip"
+    },
+    {
+      "_id": "d05f6e2c6c6db520679b2c44",
+      "_tpl": "5d2c76ed48f03532f2136169",
+      "parentId": "2ab6f912312f9cc284ebc291",
+      "slotId": "mod_reciever"
+    },
+    {
+      "_id": "e95025ae35889b98fa089547",
+      "_tpl": "5b0e794b5acfc47a877359b2",
+      "parentId": "2ab6f912312f9cc284ebc291",
+      "slotId": "mod_stock"
+    },
+    {
+      "_id": "c31ce3fca8cfa01887a95007",
+      "_tpl": "59d6272486f77466146386ff",
+      "parentId": "2ab6f912312f9cc284ebc291",
+      "slotId": "mod_magazine"
+    },
+    {
+      "_id": "bd42098b2c12510116c899d5",
+      "_tpl": "57cff947245977638e6f2a19",
+      "parentId": "29a83a5e733ad9e8e6cf1aa4",
+      "slotId": "mod_handguard"
+    },
+    {
+      "_id": "0ea2444b17e7797e97fe9ccd",
+      "_tpl": "5c07dd120db834001c39092d",
+      "parentId": "d05f6e2c6c6db520679b2c44",
+      "slotId": "mod_scope",
+      "upd": {
+        "Sight": {
+          "ScopesCurrentCalibPointIndexes": [
+            0
+          ],
+          "ScopesSelectedModes": [
+            0
+          ],
+          "SelectedScope": 0
+        }
+      }
+    },
+    {
+      "_id": "d96790b54d8fadfd1c09e94b",
+      "_tpl": "57cffb66245977632f391a99",
+      "parentId": "bd42098b2c12510116c899d5",
+      "slotId": "mod_mount_003"
+    }
+  ],
+  "Parent": "5447b5f14bdc2d61278b4567"
+}

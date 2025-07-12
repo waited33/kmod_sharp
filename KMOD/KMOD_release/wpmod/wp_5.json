@@ -1,0 +1,86 @@
+{
+  "id": "08161903461849690123ae21",
+  "name": "wp 5",
+  "root": "8098b9be2af67502749d1c76",
+  "items": [
+    {
+      "_id": "8098b9be2af67502749d1c76",
+      "_tpl": "5a7828548dc32e5a9c28b516",
+      "upd": {
+        "Repairable": {
+          "MaxDurability": 100,
+          "Durability": 100
+        },
+        "FireMode": {
+          "FireMode": "single"
+        }
+      }
+    },
+    {
+      "_id": "7b6f4890522cebfe74772c57",
+      "_tpl": "5a787f7ac5856700177af660",
+      "parentId": "8098b9be2af67502749d1c76",
+      "slotId": "mod_barrel"
+    },
+    {
+      "_id": "c40f4cc234eff7fd91060cfd",
+      "_tpl": "5a788068c5856700137e4c8f",
+      "parentId": "8098b9be2af67502749d1c76",
+      "slotId": "mod_handguard"
+    },
+    {
+      "_id": "8b7140ed523ea9b6154c8c76",
+      "_tpl": "5a7882dcc5856700177af662",
+      "parentId": "8098b9be2af67502749d1c76",
+      "slotId": "mod_magazine"
+    },
+    {
+      "_id": "0cada9c4c97fe683295d2631",
+      "_tpl": "5a78813bc5856700186c4abe",
+      "parentId": "8098b9be2af67502749d1c76",
+      "slotId": "mod_stock"
+    },
+    {
+      "_id": "c93db0d5accd084845e67c33",
+      "_tpl": "5c0111ab0db834001966914d",
+      "parentId": "7b6f4890522cebfe74772c57",
+      "slotId": "mod_muzzle"
+    },
+    {
+      "_id": "e03ca2d07df7297ba44217d3",
+      "_tpl": "5b7be4895acfc400170e2dd5",
+      "parentId": "c40f4cc234eff7fd91060cfd",
+      "slotId": "mod_foregrip"
+    },
+    {
+      "_id": "3e395cf5a60701981d379539",
+      "_tpl": "5b7be47f5acfc400170e2dd2",
+      "parentId": "c40f4cc234eff7fd91060cfd",
+      "slotId": "mod_mount_000"
+    },
+    {
+      "_id": "714bdf62e55bdb573be59da5",
+      "_tpl": "58272d7f2459774f6311ddfd",
+      "parentId": "c93db0d5accd084845e67c33",
+      "slotId": "mod_muzzle"
+    },
+    {
+      "_id": "088f6a5b93d424cbbaab92d3",
+      "_tpl": "5c87ca002e221600114cb150",
+      "parentId": "e03ca2d07df7297ba44217d3",
+      "slotId": "mod_foregrip"
+    },
+    {
+      "_id": "27e41d14b23cb15a9cf11ae1",
+      "_tpl": "5cc9c20cd7f00c001336c65d",
+      "parentId": "3e395cf5a60701981d379539",
+      "slotId": "mod_tactical",
+      "upd": {
+        "Light": {
+          "IsActive": true,
+          "SelectedMode": 0
+        }
+      }
+    }
+  ]
+}

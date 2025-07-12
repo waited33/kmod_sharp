@@ -1,0 +1,64 @@
+{
+  "id": "081619034625122006795086",
+  "name": "wp 9",
+  "root": "420f5da53ca38c51ab9484ff",
+  "items": [
+    {
+      "_id": "420f5da53ca38c51ab9484ff",
+      "_tpl": "56d59856d2720bd8418b456a",
+      "upd": {
+        "Repairable": {
+          "MaxDurability": 95,
+          "Durability": 88
+        },
+        "FireMode": {
+          "FireMode": "single"
+        }
+      }
+    },
+    {
+      "_id": "f460f2dc084dbfd832021d10",
+      "_tpl": "587de4282459771bca0ec90b",
+      "parentId": "420f5da53ca38c51ab9484ff",
+      "slotId": "mod_barrel"
+    },
+    {
+      "_id": "fc39fa61308e18eea95e4074",
+      "_tpl": "5c00076d0db834001d23ee1f",
+      "parentId": "420f5da53ca38c51ab9484ff",
+      "slotId": "mod_pistol_grip"
+    },
+    {
+      "_id": "a72655b24e644ff70ef2526b",
+      "_tpl": "5c0009510db834001966907f",
+      "parentId": "420f5da53ca38c51ab9484ff",
+      "slotId": "mod_reciever"
+    },
+    {
+      "_id": "52127698b5a3bf92d0c53ee3",
+      "_tpl": "5c920e902e221644f31c3c99",
+      "parentId": "420f5da53ca38c51ab9484ff",
+      "slotId": "mod_magazine"
+    },
+    {
+      "_id": "57aa12dc9520b71e8277bd1d",
+      "_tpl": "5cc9c20cd7f00c001336c65d",
+      "parentId": "420f5da53ca38c51ab9484ff",
+      "slotId": "mod_tactical",
+      "upd": {
+        "SpawnedInSession": true,
+        "Light": {
+          "IsActive": true,
+          "SelectedMode": 0
+        }
+      }
+    },
+    {
+      "_id": "d4ac632b1316d42c3bc19c51",
+      "_tpl": "5c6beec32e221601da3578f2",
+      "parentId": "f460f2dc084dbfd832021d10",
+      "slotId": "mod_muzzle"
+    }
+  ],
+  "Parent": "5447b5cf4bdc2d65278b4567"
+}

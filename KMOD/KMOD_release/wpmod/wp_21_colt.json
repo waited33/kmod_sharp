@@ -1,0 +1,121 @@
+{
+  "id": "081619034627482324236e22",
+  "name": "wp 21 colt",
+  "root": "e7a68706e74c8caa6dc0bd74",
+  "items": [
+    {
+      "_id": "e7a68706e74c8caa6dc0bd74",
+      "_tpl": "5e81c3cbac2bb513793cdc75",
+      "upd": {
+        "Repairable": {
+          "MaxDurability": 100,
+          "Durability": 92
+        },
+        "FireMode": {
+          "FireMode": "single"
+        }
+      }
+    },
+    {
+      "_id": "d4e4db3fbfc187a31f75724a",
+      "_tpl": "5e81c519cb2b95385c177551",
+      "parentId": "e7a68706e74c8caa6dc0bd74",
+      "slotId": "mod_barrel"
+    },
+    {
+      "_id": "a452dd3ea1edd73e217850aa",
+      "_tpl": "5ef366938cef260c0642acad",
+      "parentId": "e7a68706e74c8caa6dc0bd74",
+      "slotId": "mod_pistol_grip"
+    },
+    {
+      "_id": "3f8e45d991a0781723ef690c",
+      "_tpl": "5e81edc13397a21db957f6a1",
+      "parentId": "e7a68706e74c8caa6dc0bd74",
+      "slotId": "mod_reciever"
+    },
+    {
+      "_id": "46229feaf1df3d73684196e2",
+      "_tpl": "5e81c4ca763d9f754677befa",
+      "parentId": "e7a68706e74c8caa6dc0bd74",
+      "slotId": "mod_magazine"
+    },
+    {
+      "_id": "df7bb4b1b81f866eaff9b748",
+      "_tpl": "5e81c6a2ac2bb513793cdc7f",
+      "parentId": "e7a68706e74c8caa6dc0bd74",
+      "slotId": "mod_trigger"
+    },
+    {
+      "_id": "93ea9035ee6fc97f81ba598c",
+      "_tpl": "5e81c550763d9f754677befd",
+      "parentId": "e7a68706e74c8caa6dc0bd74",
+      "slotId": "mod_hammer"
+    },
+    {
+      "_id": "06ccba510d98fa955eeb28b8",
+      "_tpl": "5e81c539cb2b95385c177553",
+      "parentId": "e7a68706e74c8caa6dc0bd74",
+      "slotId": "mod_catch"
+    },
+    {
+      "_id": "3c07bb21a328dc418cf64ed2",
+      "_tpl": "5ef369b08cef260c0642acaf",
+      "parentId": "e7a68706e74c8caa6dc0bd74",
+      "slotId": "mod_mount_001"
+    },
+    {
+      "_id": "605053dbd3388a45ce4efc14",
+      "_tpl": "5e81ee4dcb2b95385c177582",
+      "parentId": "3f8e45d991a0781723ef690c",
+      "slotId": "mod_sight_rear",
+      "upd": {
+        "Sight": {
+          "ScopesCurrentCalibPointIndexes": [
+            0
+          ],
+          "ScopesSelectedModes": [
+            0
+          ],
+          "SelectedScope": 0
+        }
+      }
+    },
+    {
+      "_id": "7730103540e45387d98da69f",
+      "_tpl": "5e81ee213397a21db957f6a6",
+      "parentId": "3f8e45d991a0781723ef690c",
+      "slotId": "mod_sight_front",
+      "upd": {
+        "Sight": {
+          "ScopesCurrentCalibPointIndexes": [
+            0
+          ],
+          "ScopesSelectedModes": [
+            0
+          ],
+          "SelectedScope": 0
+        }
+      }
+    },
+    {
+      "_id": "4a5b198de5bc5a10de006420",
+      "_tpl": "5ef61964ec7f42238c31e0c1",
+      "parentId": "3f8e45d991a0781723ef690c",
+      "slotId": "mod_muzzle"
+    },
+    {
+      "_id": "fa64131f46e2a89586f2fd55",
+      "_tpl": "56def37dd2720bec348b456a",
+      "parentId": "3c07bb21a328dc418cf64ed2",
+      "slotId": "mod_tactical",
+      "upd": {
+        "Light": {
+          "IsActive": true,
+          "SelectedMode": 0
+        }
+      }
+    }
+  ],
+  "Parent": "5447b5cf4bdc2d65278b4567"
+}

@@ -1,0 +1,95 @@
+{
+  "id": "081619034671990193927604",
+  "name": "wp 16",
+  "root": "89b334783a06e9e5efb94c86",
+  "items": [
+    {
+      "_id": "89b334783a06e9e5efb94c86",
+      "_tpl": "588892092459774ac91d4b11",
+      "upd": {
+        "Repairable": {
+          "MaxDurability": 100,
+          "Durability": 100
+        },
+        "Foldable": {
+          "Folded": false
+        },
+        "FireMode": {
+          "FireMode": "single"
+        }
+      }
+    },
+    {
+      "_id": "08d3deb9d5353a35a98c3a3d",
+      "_tpl": "5888988e24597752fe43a6fa",
+      "parentId": "89b334783a06e9e5efb94c86",
+      "slotId": "mod_magazine"
+    },
+    {
+      "_id": "eb84a75920f5f8fbd781bca3",
+      "_tpl": "61713cc4d8e3106d9806c109",
+      "parentId": "89b334783a06e9e5efb94c86",
+      "slotId": "mod_scope"
+    },
+    {
+      "_id": "f6fed373c19ac9a015ae3005",
+      "_tpl": "5888956924597752983e182d",
+      "parentId": "89b334783a06e9e5efb94c86",
+      "slotId": "mod_barrel"
+    },
+    {
+      "_id": "0b67debce80c439bebd9cdcc",
+      "_tpl": "57c55f172459772d27602381",
+      "parentId": "89b334783a06e9e5efb94c86",
+      "slotId": "mod_pistol_grip"
+    },
+    {
+      "_id": "faecb2b835bc58b092e5c933",
+      "_tpl": "58889d0c2459775bc215d981",
+      "parentId": "89b334783a06e9e5efb94c86",
+      "slotId": "mod_stock"
+    },
+    {
+      "_id": "c4c1866446d854441f0d514c",
+      "_tpl": "5aa66be6e5b5b0214e506e97",
+      "parentId": "eb84a75920f5f8fbd781bca3",
+      "slotId": "mod_scope_000",
+      "upd": {
+        "Sight": {
+          "ScopesCurrentCalibPointIndexes": [
+            0
+          ],
+          "ScopesSelectedModes": [
+            0
+          ],
+          "SelectedScope": 0
+        }
+      }
+    },
+    {
+      "_id": "ee67907cc04dc5405988e993",
+      "_tpl": "5888996c24597754281f9419",
+      "parentId": "f6fed373c19ac9a015ae3005",
+      "slotId": "mod_muzzle"
+    },
+    {
+      "_id": "87245ea531082ced83ca1dea",
+      "_tpl": "5888976c24597754281f93f5",
+      "parentId": "f6fed373c19ac9a015ae3005",
+      "slotId": "mod_handguard"
+    },
+    {
+      "_id": "7ed604c17a5359a1bd51b7a1",
+      "_tpl": "5cc9c20cd7f00c001336c65d",
+      "parentId": "87245ea531082ced83ca1dea",
+      "slotId": "mod_tactical_001",
+      "upd": {
+        "Light": {
+          "IsActive": true,
+          "SelectedMode": 0
+        }
+      }
+    }
+  ],
+  "Parent": "5447b6254bdc2dc3278b4568"
+}

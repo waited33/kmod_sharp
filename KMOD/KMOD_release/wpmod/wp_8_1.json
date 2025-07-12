@@ -1,0 +1,117 @@
+{
+  "Id": "67f27a400100170f1765b9c1",
+  "Name": "wp_8_1",
+  "Root": "67f27a47799d22262403affc",
+  "items": [
+    {
+      "_id": "67f27a47799d22262403affc",
+      "_tpl": "5a7ae0c351dfba0017554310",
+      "upd": {
+        "SpawnedInSession": true,
+        "Repairable": {
+          "MaxDurability": 100,
+          "Durability": 100
+        },
+        "FireMode": {
+          "FireMode": "single"
+        }
+      }
+    },
+    {
+      "_id": "67f27a47799d22262403affd",
+      "_tpl": "5a6b5e468dc32e001207faf5",
+      "slotId": "mod_barrel",
+      "upd": {
+        "SpawnedInSession": true
+      },
+      "parentId": "67f27a47799d22262403affc"
+    },
+    {
+      "_id": "67f27a47799d22262403affe",
+      "_tpl": "5a7b4960e899ef197b331a2d",
+      "slotId": "mod_pistol_grip",
+      "upd": {
+        "SpawnedInSession": true
+      },
+      "parentId": "67f27a47799d22262403affc"
+    },
+    {
+      "_id": "67f27a47799d22262403afff",
+      "_tpl": "5a6f5e048dc32e00094b97da",
+      "slotId": "mod_reciever",
+      "upd": {
+        "SpawnedInSession": true
+      },
+      "parentId": "67f27a47799d22262403affc"
+    },
+    {
+      "_id": "67f27a47799d22262403b000",
+      "_tpl": "5a718da68dc32e000d46d264",
+      "slotId": "mod_magazine",
+      "upd": {
+        "SpawnedInSession": true
+      },
+      "parentId": "67f27a47799d22262403affc"
+    },
+    {
+      "_id": "67f27a47799d22262403b001",
+      "_tpl": "560d657b4bdc2da74d8b4572",
+      "slotId": "mod_tactical",
+      "upd": {
+        "Light": {
+          "IsActive": true,
+          "SelectedMode": 0
+        }
+      },
+      "parentId": "67f27a47799d22262403affc"
+    },
+    {
+      "_id": "67f27a47799d22262403b002",
+      "_tpl": "5a6b592c8dc32e00094b97bf",
+      "slotId": "mod_muzzle",
+      "upd": {
+        "SpawnedInSession": true
+      },
+      "parentId": "67f27a47799d22262403affd"
+    },
+    {
+      "_id": "67f27a47799d22262403b003",
+      "_tpl": "5a6f5d528dc32e00094b97d9",
+      "slotId": "mod_sight_rear",
+      "upd": {
+        "SpawnedInSession": true,
+        "Sight": {
+          "ScopesCurrentCalibPointIndexes": [
+            0
+          ],
+          "ScopesSelectedModes": [
+            0
+          ],
+          "SelectedScope": 0,
+          "ScopeZoomValue": 0
+        }
+      },
+      "parentId": "67f27a47799d22262403afff"
+    },
+    {
+      "_id": "67f27a47799d22262403b004",
+      "_tpl": "5a6f58f68dc32e000a311390",
+      "slotId": "mod_sight_front",
+      "upd": {
+        "SpawnedInSession": true,
+        "Sight": {
+          "ScopesCurrentCalibPointIndexes": [
+            0
+          ],
+          "ScopesSelectedModes": [
+            0
+          ],
+          "SelectedScope": 0,
+          "ScopeZoomValue": 0
+        }
+      },
+      "parentId": "67f27a47799d22262403afff"
+    }
+  ],
+  "Parent": "5447b5cf4bdc2d65278b4567"
+}

@@ -1,0 +1,118 @@
+{
+  "id": "0816190346605125506cea36",
+  "name": "wp 8",
+  "root": "d740a6fd8bea134fc40bad2f",
+  "items": [
+    {
+      "_id": "d740a6fd8bea134fc40bad2f",
+      "_tpl": "5ab8e9fcd8ce870019439434",
+      "upd": {
+        "Repairable": {
+          "MaxDurability": 100,
+          "Durability": 100
+        },
+        "Foldable": {
+          "Folded": false
+        },
+        "FireMode": {
+          "FireMode": "single"
+        }
+      }
+    },
+    {
+      "_id": "f33b38a545ee4f6952267d43",
+      "_tpl": "59c6633186f7740cf0493bb9",
+      "parentId": "d740a6fd8bea134fc40bad2f",
+      "slotId": "mod_gas_block"
+    },
+    {
+      "_id": "1d08d7d5aa9fb9b07e3decb8",
+      "_tpl": "5649ab884bdc2ded0b8b457f",
+      "parentId": "d740a6fd8bea134fc40bad2f",
+      "slotId": "mod_muzzle"
+    },
+    {
+      "_id": "3c75127798cc081f573ea0d7",
+      "_tpl": "5649ae4a4bdc2d1b2b8b4588",
+      "parentId": "d740a6fd8bea134fc40bad2f",
+      "slotId": "mod_pistol_grip"
+    },
+    {
+      "_id": "088f8861698f31a7259daa51",
+      "_tpl": "5649af884bdc2d1b2b8b4589",
+      "parentId": "d740a6fd8bea134fc40bad2f",
+      "slotId": "mod_reciever"
+    },
+    {
+      "_id": "cc72e4f1f2d24605e373af0a",
+      "_tpl": "5649b0544bdc2d1b2b8b458a",
+      "parentId": "d740a6fd8bea134fc40bad2f",
+      "slotId": "mod_sight_rear",
+      "upd": {
+        "Sight": {
+          "ScopesCurrentCalibPointIndexes": [
+            0
+          ],
+          "ScopesSelectedModes": [
+            0
+          ],
+          "SelectedScope": 0
+        }
+      }
+    },
+    {
+      "_id": "eb2f9ca9adc43c842fb3ae20",
+      "_tpl": "59ecc28286f7746d7a68aa8c",
+      "parentId": "d740a6fd8bea134fc40bad2f",
+      "slotId": "mod_stock"
+    },
+    {
+      "_id": "ace67c546faf21fd92b09cb1",
+      "_tpl": "5bed61680db834001d2c45ab",
+      "parentId": "d740a6fd8bea134fc40bad2f",
+      "slotId": "mod_magazine"
+    },
+    {
+      "_id": "add767ae79987a0c00d75edd",
+      "_tpl": "5efaf417aeb21837e749c7f2",
+      "parentId": "f33b38a545ee4f6952267d43",
+      "slotId": "mod_handguard"
+    },
+    {
+      "_id": "f441d135df1ccd8bfe2e075f",
+      "_tpl": "59ecc3dd86f7746dc827481c",
+      "parentId": "eb2f9ca9adc43c842fb3ae20",
+      "slotId": "mod_stock"
+    },
+    {
+      "_id": "29ea2280ee5d99d23a6130e1",
+      "_tpl": "56dff026d2720bb8668b4567",
+      "parentId": "ace67c546faf21fd92b09cb1",
+      "slotId": "cartridges",
+      "location": 0,
+      "upd": {
+        "StackObjectsCount": 30,
+        "SpawnedInSession": true
+      }
+    },
+    {
+      "_id": "1170ce91637d1764ab802b96",
+      "_tpl": "5c1bc4812e22164bef5cfde7",
+      "parentId": "add767ae79987a0c00d75edd",
+      "slotId": "mod_foregrip"
+    },
+    {
+      "_id": "fc8ba373e3ceeb933e98bb59",
+      "_tpl": "5a5f1ce64f39f90b401987bc",
+      "parentId": "add767ae79987a0c00d75edd",
+      "slotId": "mod_tactical_002",
+      "upd": {
+        "Light": {
+          "IsActive": true,
+          "SelectedMode": 0
+        }
+      }
+    }
+  ],
+  "Parent": "5447b5f14bdc2d61278b4567"
+}

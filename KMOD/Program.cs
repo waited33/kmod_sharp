@@ -9,11 +9,15 @@ using SPTarkov.Server.Core.Servers;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using System.Reflection;
 using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Server.Core.Models.Utils;
+using SPTarkov.Server.Core.Utils;
+using SPTarkov.Server.Core.Models.Eft.ItemEvent;
 
 namespace KMOD;
 
 public record MyModMetadata : AbstractModMetadata
 {
+	public override string? ModId { get; set; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
 	public override string? Name { get; set; } = "KMOD";
 	public override string? Author { get; set; } = "Krinkels";
 	public override List<string>? Contributors { get; set; } = new() { "", "" };
@@ -49,7 +53,7 @@ public class KMOD(
 		SPTarkov.Server.Core.Models.Spt.Server.Locations locations = databaseService.GetLocations();
 		SPTarkov.Server.Core.Models.Spt.Hideout.Hideout hideout = databaseService.GetHideout();
 		TraderConfig traderConfig = _configServer.GetConfig<TraderConfig>();
-
+		
 		// Возможность продавать биткоин на барахолке
 		items[ ItemTpl.BARTER_PHYSICAL_BITCOIN ].Properties.CanSellOnRagfair = true;
 
@@ -336,6 +340,50 @@ public class MY_PROFILE(
 		var myProfile = modHelper.GetJsonDataFromFile<ProfileSides>( pathToMod, "Profile/Unheard.json" );
 
 		Profile.TryAdd( "Krinkels Unheard Profile", myProfile );
+
+		return Task.CompletedTask;
+	}
+}
+
+// Для квеста Механика "Оружейник"
+[Injectable( TypePriority = OnLoadOrder.PostDBModLoader + 1 )]
+public class WPMOD(
+	ISptLogger<WPMOD> logger,
+	ModHelper modHelper,
+	FileUtil fileUtil,
+	JsonUtil jsonUtil,
+	ConfigServer _configServer
+	) : IOnLoad
+{
+	public Task OnLoad()
+	{
+		GiftsConfig akigifts = _configServer.GetConfig<GiftsConfig>();
+		var pathToMod = modHelper.GetAbsolutePathToModFolder( Assembly.GetExecutingAssembly() );
+
+		var wpMod = new Gift
+		{
+			Sender = GiftSenderType.System,
+			MessageText = "Лень оружие для механика собирать? Эх ты, ладно, вот тебе сборки",
+			CollectionTimeHours = 48,
+			AssociatedEvent = SeasonalEventType.None,
+			MaxToSendPlayer = 1,
+			Items = []
+		};
+
+		var wpFolder = System.IO.Path.Combine( pathToMod, "wpmod" );
+		string[] wpFiles = Directory.GetFiles( wpFolder, "*.json", SearchOption.TopDirectoryOnly );
+
+		foreach( string file in wpFiles )
+		{
+			string json = fileUtil.ReadFile( file );
+			WeaponBuildChange jsData = jsonUtil.Deserialize<WeaponBuildChange>( json );
+
+			wpMod.Items.AddRange( jsData.Items );
+		}
+
+		//logger.LogWithColor( $"############## {outputJson}", LogTextColor.Cyan );
+
+		akigifts.Gifts.TryAdd( "TapokWpMod", wpMod );
 
 		return Task.CompletedTask;
 	}
