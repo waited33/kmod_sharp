@@ -84,12 +84,18 @@ public class KMOD(
 				baseItem.Properties.MaximumNumberOfUsage = 0;
 			}
 
-			// Без перегрева оружия
-			if( baseItem.Properties?.AllowOverheat != null )
+			// Полное обнаружение
+			if( baseItem.Properties?.ExaminedByDefault != null )
 			{
-				baseItem.Properties.AllowOverheat = false;
+				baseItem.Properties.ExaminedByDefault = true;
 			}
 
+			// Ножны можно обыскать
+			if( baseItem.Properties?.Unlootable != null )
+			{
+				baseItem.Properties.Unlootable = false;
+			}
+   
 			// Насколько увеличить число патронов в ячейке
 			if( StackMaxSize > 0 && baseItem.Parent == BaseClasses.AMMO && baseItem.Properties.StackMaxSize != null )
 			{
@@ -100,29 +106,6 @@ public class KMOD(
 			if( baseItem.Parent == BaseClasses.MAGAZINE && baseItem.Properties?.LoadUnloadModifier != null )
 			{
 				baseItem.Properties.LoadUnloadModifier = LoadUnloadModifier;
-			}
-		}
-		///****************************************************************
-
-		///****************************************************************
-		// Ремонт не изнашивает броню
-		foreach( var armormats in globals.ArmorMaterials.Values )
-		{
-			armormats.MaxRepairDegradation = 0;
-			armormats.MinRepairDegradation = 0;
-			armormats.MaxRepairKitDegradation = 0;
-			armormats.MinRepairKitDegradation = 0;
-		}
-
-		// Ремонт не изнашивает оружие
-		foreach( var item in items.Values )
-		{
-			if( item.Properties?.MaxRepairDegradation != null && item.Properties?.MaxRepairKitDegradation != null )
-			{
-				item.Properties.MinRepairDegradation = 0;
-				item.Properties.MaxRepairDegradation = 0;
-				item.Properties.MinRepairKitDegradation = 0;
-				item.Properties.MaxRepairKitDegradation = 0;
 			}
 		}
 
@@ -167,46 +150,6 @@ public class KMOD(
 		locs.LooseLootMultiplier[ "labyrinth" ] += 2;
 
 		locs.ContainerRandomisationSettings.Enabled = false;
-		///****************************************************************
-
-		///****************************************************************
-		// Бесконечная выносливость
-		globals.Stamina.Capacity = 500;
-		globals.Stamina.BaseRestorationRate = 500;
-		globals.Stamina.StaminaExhaustionCausesJiggle = false;
-		globals.Stamina.StaminaExhaustionStartsBreathSound = false;
-		globals.Stamina.StaminaExhaustionRocksCamera = false;
-		globals.Stamina.SprintDrainRate = 0;
-		globals.Stamina.JumpConsumption = 0;
-		globals.Stamina.AimDrainRate = 0;
-		globals.Stamina.SitToStandConsumption = 0;
-
-		// Множитель опыта навыкам
-		globals.SkillsSettings.SkillProgressRate = 10;
-
-		// Множитель прокачки оружия
-		globals.SkillsSettings.WeaponSkillProgressRate = 5;
-
-		// Сколько длится усталость
-		globals.SkillFatigueReset = 0;
-
-		// Очки бодрости
-		globals.SkillFreshPoints = 10;
-
-		// % эффективности "свежих" навыков
-		globals.SkillFreshEffectiveness = 10;
-
-		// Множитель опыта при бодрости
-		globals.SkillFreshEffectiveness = 10;
-
-		// Усталость за очко
-		globals.SkillFatiguePerPoint = 0;
-
-		// Опыт при максимальной усталости
-		globals.SkillMinEffectiveness = 10;
-
-		// Очки перед наступлением усталости
-		globals.SkillPointsBeforeFatigue = 100;
 		///****************************************************************
 
 		///****************************************************************		
