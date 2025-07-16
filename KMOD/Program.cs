@@ -17,7 +17,7 @@ namespace KMOD;
 
 public record MyModMetadata : AbstractModMetadata
 {
-	public override string? ModId { get; set; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
+	public override string? ModGuid { get; set; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
 	public override string? Name { get; set; } = "KMOD";
 	public override string? Author { get; set; } = "Krinkels";
 	public override List<string>? Contributors { get; set; } = new() { "", "" };
