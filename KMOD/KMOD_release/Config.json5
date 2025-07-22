@@ -1,0 +1,42 @@
+{
+	"Items":
+	{
+		"Enable":true,						// Вкл/выкл настройки предметов
+		"RemoveKeysUsageNumber":true,		// Убрать лимит ключей
+		"AvoidSingleKeys":true,				// Одноразовые ключи используются только единожды		
+		"StackMaxSize":150,					// Насколько увеличить число патронов в ячейке	
+					
+		"HideoutConstMult":-1,				// Множитель времени постройки в убежище. Меньше - быстрее. При -1 мгновенная постройка
+		"HideoutProdMult":-1,				// Множитель времени производства. Меньше - быстрее		
+		"BitcoinSellOnRagfair": true,		// Возможность продавать биткоин на барахолке
+		"Surv12UseTime":10,					// Время применения Surv12. Указывать точное время в секундах
+		"TraderPurchasesFoundInRaid":true,	// У всех торговцев товар "найден в рейде"
+		
+		"SecureContainers":
+		{
+			"Enable": true,					// Вкл/выкл редактирование размера контейнера
+			
+			// Имя защищённого контейнера. Доступны значения:
+			// 544a11ac4bdc2d470e8b456a - SECURE_CONTAINER_ALPHA
+			// 5857a8b324597729ab0a0e7d - SECURE_CONTAINER_BETA
+			// 59db794186f77448bc595262 - SECURE_CONTAINER_EPSILON
+			// 5857a8bc2459772bad15db29 - SECURE_CONTAINER_GAMMA
+			// 665ee77ccf2d642e98220bca - SECURE_CONTAINER_GAMMA_TUE
+			// 5c093ca986f7740a1867ab12 - SECURE_CONTAINER_KAPPA
+			// 676008db84e242067d0dc4c9 - SECURE_CONTAINER_KAPPA_DESECRATED
+			// 664a55d84a90fc2c8a6305c9 - SECURE_CONTAINER_THETA
+			"Secure_Container_Name": "676008db84e242067d0dc4c9",
+			
+			"HSize":5,						// По горизонтали
+			"VSize":5						// По вертикали
+		}		
+	},
+	"Weapons":
+	{
+		"Enable": true,						// Вкл/выкл
+		"OpArmorRepair":true,				// Ремонт не изнашивает броню
+		"OpGunRepair":true,					// Ремонт не изнашивает оружие
+		"WeaponHeatOff":true,				// Без перегрева оружия		
+		"LoadUnloadModifier":-30,			// Отрицательное число уменьшает время заряда магазина	
+	}
+}

@@ -1,23 +1,27 @@
-﻿using SPTarkov.Server.Core.Models.Eft.Common.Tables;
-using SPTarkov.Server.Core.Models.Spt.Mod;
+﻿using fastJSON5;
 using SPTarkov.DI.Annotations;
-using SPTarkov.Server.Core.Helpers;
-using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Models.Enums;
-using SPTarkov.Server.Core.Servers;
-using SPTarkov.Server.Core.Models.Spt.Config;
-using System.Reflection;
+using SPTarkov.Server.Core.Helpers;
 using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Models.Utils;
-using SPTarkov.Server.Core.Utils;
+using SPTarkov.Server.Core.Models.Eft.Common;
+using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Eft.ItemEvent;
+using SPTarkov.Server.Core.Models.Enums;
+using SPTarkov.Server.Core.Models.Logging;
+using SPTarkov.Server.Core.Models.Spt.Config;
+using SPTarkov.Server.Core.Models.Spt.Hideout;
+using SPTarkov.Server.Core.Models.Spt.Mod;
+using SPTarkov.Server.Core.Models.Utils;
+using SPTarkov.Server.Core.Servers;
+using SPTarkov.Server.Core.Services;
+using SPTarkov.Server.Core.Utils;
+using System.Reflection;
 
 namespace KMOD;
 
-public record MyModMetadata : AbstractModMetadata
+public record ModMetadata : AbstractModMetadata
 {
-	public override string? ModId { get; set; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
+	public override string? ModGuid { get; set; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
 	public override string? Name { get; set; } = "KMOD";
 	public override string? Author { get; set; } = "Krinkels";
 	public override List<string>? Contributors { get; set; } = new() { "", "" };
@@ -32,9 +36,9 @@ public record MyModMetadata : AbstractModMetadata
 	public override string? Licence { get; set; } = "MIT";
 }
 
-[Injectable( TypePriority = OnLoadOrder.PostDBModLoader )]
+[Injectable( TypePriority = OnLoadOrder.PostDBModLoader + 1 )]
 public class KMOD(
-	//ISptLogger<KMOD> logger,
+	ISptLogger<KMOD> logger,
 	//HashUtil hashUtil,
 	DatabaseService databaseService,
 	//TraderController traderController,
@@ -46,254 +50,157 @@ public class KMOD(
 	public Task OnLoad()
 	{
 		Dictionary<MongoId, TemplateItem> items = databaseService.GetItems();
-		SPTarkov.Server.Core.Models.Eft.Common.Config globals = databaseService.GetGlobals().Configuration;
-		RagfairConfig Ragfair = _configServer.GetConfig<RagfairConfig>();
-		LocationConfig locs = _configServer.GetConfig<LocationConfig>();
-		BotConfig botConfig = _configServer.GetConfig<BotConfig>();
-		SPTarkov.Server.Core.Models.Spt.Server.Locations locations = databaseService.GetLocations();
-		SPTarkov.Server.Core.Models.Spt.Hideout.Hideout hideout = databaseService.GetHideout();
+		var hideout = databaseService.GetHideout();
 		TraderConfig traderConfig = _configServer.GetConfig<TraderConfig>();
+		SPTarkov.Server.Core.Models.Eft.Common.Config globals = databaseService.GetGlobals().Configuration;
+
+
+		// ******************************************************************************
+		// Загружаем наши настройки
+		var pathToMod = modHelper.GetAbsolutePathToModFolder( Assembly.GetExecutingAssembly() );
 		
-		// Возможность продавать биткоин на барахолке
-		items[ ItemTpl.BARTER_PHYSICAL_BITCOIN ].Properties.CanSellOnRagfair = true;
-
-		// Surv12, меняем время применения, было 20 стало 10
-		items[ ItemTpl.MEDICAL_SURV12_FIELD_SURGICAL_KIT ].Properties.MedUseTime = 10;
-
-		// У всех торговцев товар "найден в рейде"
-		//trader.purchasesAreFoundInRaid = true;
-		traderConfig.PurchasesAreFoundInRaid = true;
-
-		// Свой ник в списке имён ботов
-		//DB.getBots().types.bear[ "firstName" ].push( "Zloy Tapok" );
-		//DB.getBots().types.usec[ "firstName" ].push( "Zloy Tapok" );
-
-		///****************************************************************
-		int StackMaxSize = 150;                 // Насколько увеличить число патронов в ячейке
-		int LoadUnloadModifier = -30;           // Отрицательное число уменьшает время заряда магазина
-		foreach( var id in items.Keys )
+		KConfig Config = null;
+		try
 		{
-			var baseItem = items[ id ];
-
-			// Убрать лимит ключей
-			if( ( baseItem.Parent == BaseClasses.KEY_MECHANICAL || baseItem.Parent == BaseClasses.KEYCARD ) && baseItem.Properties?.MaximumNumberOfUsage != null )
-			{
-				if( baseItem.Properties?.MaximumNumberOfUsage == 1 )
-					continue;
-
-				baseItem.Properties.MaximumNumberOfUsage = 0;
-			}
-
-			// Без перегрева оружия
-			if( baseItem.Properties?.AllowOverheat != null )
-			{
-				baseItem.Properties.AllowOverheat = false;
-			}
-
-			// Насколько увеличить число патронов в ячейке
-			if( StackMaxSize > 0 && baseItem.Parent == BaseClasses.AMMO && baseItem.Properties.StackMaxSize != null )
-			{
-				baseItem.Properties.StackMaxSize += StackMaxSize;
-			}
-
-			// Процент уменьшения/увеличения времени зарядки магазина
-			if( baseItem.Parent == BaseClasses.MAGAZINE && baseItem.Properties?.LoadUnloadModifier != null )
-			{
-				baseItem.Properties.LoadUnloadModifier = LoadUnloadModifier;
-			}
+			Config = JSON5.ToObject<KConfig>( modHelper.GetRawFileData( pathToMod, "Config.json5" ) );
 		}
-		///****************************************************************
-
-		///****************************************************************
-		// Ремонт не изнашивает броню
-		foreach( var armormats in globals.ArmorMaterials.Values )
+		catch( Exception e )
 		{
-			armormats.MaxRepairDegradation = 0;
-			armormats.MinRepairDegradation = 0;
-			armormats.MaxRepairKitDegradation = 0;
-			armormats.MinRepairKitDegradation = 0;
+			logger.Error( $"[KMOD] Ошибка при загрузке Config.json5: {e.Message}" );			
+			return Task.CompletedTask;
 		}
 
-		// Ремонт не изнашивает оружие
-		foreach( var item in items.Values )
+		if( Config.Items?.Enable == true )
 		{
-			if( item.Properties?.MaxRepairDegradation != null && item.Properties?.MaxRepairKitDegradation != null )
+			foreach( var id in items.Keys )
 			{
-				item.Properties.MinRepairDegradation = 0;
-				item.Properties.MaxRepairDegradation = 0;
-				item.Properties.MinRepairKitDegradation = 0;
-				item.Properties.MaxRepairKitDegradation = 0;
-			}
-		}
+				var baseItem = items[ id ];
 
-		///****************************************************************
-		///****************************************************************
-		// Отключить чёрный список BSG
-		Ragfair.Dynamic.Blacklist.EnableBsgList = false;
-
-		// Шанс продажи на барахолке
-		Ragfair.Sell.Chance.Base = 100;
-
-		// Шанс продажи за дорого
-		Ragfair.Sell.Chance.MaxSellChancePercent = 100;
-
-		// Шанс продажи за дёшево
-		Ragfair.Sell.Chance.MinSellChancePercent = 100;
-
-		// Максимальное
-		Ragfair.Sell.Time.Max = 0.5;
-
-		// Минимальное
-		Ragfair.Sell.Time.Min = 0;
-
-		// Товары на барахолке "найдены в рейде"
-		Ragfair.Dynamic.PurchasesAreFoundInRaid = true;
-		///****************************************************************
-
-		///****************************************************************
-		// Шанс появления динамического лута
-		locs.LooseLootMultiplier[ "factory4_day" ] += 2;
-		locs.LooseLootMultiplier[ "factory4_night" ] += 2;
-		locs.LooseLootMultiplier[ "bigmap" ] += 2;
-		locs.LooseLootMultiplier[ "woods" ] += 2;
-		locs.LooseLootMultiplier[ "shoreline" ] += 2;
-		locs.LooseLootMultiplier[ "sandbox" ] += 2;
-		locs.LooseLootMultiplier[ "sandbox_high" ] += 2;
-		locs.LooseLootMultiplier[ "interchange" ] += 2;
-		locs.LooseLootMultiplier[ "lighthouse" ] += 2;
-		locs.LooseLootMultiplier[ "laboratory" ] += 2;
-		locs.LooseLootMultiplier[ "rezervbase" ] += 2;
-		locs.LooseLootMultiplier[ "tarkovstreets" ] += 2;
-		locs.LooseLootMultiplier[ "labyrinth" ] += 2;
-
-		locs.ContainerRandomisationSettings.Enabled = false;
-		///****************************************************************
-
-		///****************************************************************
-		// Бесконечная выносливость
-		globals.Stamina.Capacity = 500;
-		globals.Stamina.BaseRestorationRate = 500;
-		globals.Stamina.StaminaExhaustionCausesJiggle = false;
-		globals.Stamina.StaminaExhaustionStartsBreathSound = false;
-		globals.Stamina.StaminaExhaustionRocksCamera = false;
-		globals.Stamina.SprintDrainRate = 0;
-		globals.Stamina.JumpConsumption = 0;
-		globals.Stamina.AimDrainRate = 0;
-		globals.Stamina.SitToStandConsumption = 0;
-
-		// Множитель опыта навыкам
-		globals.SkillsSettings.SkillProgressRate = 10;
-
-		// Множитель прокачки оружия
-		globals.SkillsSettings.WeaponSkillProgressRate = 5;
-
-		// Сколько длится усталость
-		globals.SkillFatigueReset = 0;
-
-		// Очки бодрости
-		globals.SkillFreshPoints = 10;
-
-		// % эффективности "свежих" навыков
-		globals.SkillFreshEffectiveness = 10;
-
-		// Множитель опыта при бодрости
-		globals.SkillFreshEffectiveness = 10;
-
-		// Усталость за очко
-		globals.SkillFatiguePerPoint = 0;
-
-		// Опыт при максимальной усталости
-		globals.SkillMinEffectiveness = 10;
-
-		// Очки перед наступлением усталости
-		globals.SkillPointsBeforeFatigue = 100;
-		///****************************************************************
-
-		///****************************************************************		
-		// Словарь, который связывает ID карты с соответствующими точками выхода
-		var entryPointsMap = new Dictionary<string, string>
-		{
-			{ "bigmap", "Customs,Boiler Tanks" },						// Таможня
-			{ "interchange", "MallSE,MallNW" },							// Развязка
-			{ "shoreline", "Village,Riverside" },						// Берег
-			{ "woods", "House,Old Station" },							// Лес
-			{ "lighthouse", "Tunnel,North" },							// Маяк
-			{ "tarkovstreets", "E1_2,E6_1,E2_3,E3_4,E4_5,E5_6,E6_1" },	// Улицы таркова
-			{ "sandbox", "west,east" },									// Эпицентр
-			{ "sandbox_high", "west,east" }								// Эпицентр
-		};
-
-		var mapsDb = databaseService.GetLocations();
-		var mapsDict = mapsDb.GetDictionary();
-		foreach( var (key, cap) in botConfig.MaxBotCap )
-		{
-			if( !mapsDict.TryGetValue( mapsDb.GetMappedKey( key ), out var map ) )
-			{
-				continue;
-			}
-
-			// Выход с любой стороны
-			var mapId = map.Base.Id.ToLower();
-			if( entryPointsMap.TryGetValue( mapId, out var entryPoints ) )
-			{
-				foreach( var extract in map.Base.Exits )
+				// Убрать лимит ключей
+				if( Config.Items?.RemoveKeysUsageNumber == true && ( ( baseItem.Parent == BaseClasses.KEY_MECHANICAL || baseItem.Parent == BaseClasses.KEYCARD ) && baseItem.Properties.MaximumNumberOfUsage != null ) )
 				{
-					extract.EntryPoints = entryPoints;
+					// Одноразовые ключи используются только единожды
+					if( Config.Items?.AvoidSingleKeys == true && baseItem.Properties.MaximumNumberOfUsage == 1 )
+						continue;
 
-					// Выход на машине					
-					if( extract.PassageRequirement == RequirementState.TransferItem )
+					baseItem.Properties.MaximumNumberOfUsage = 0;
+				}
+								
+				// Насколько увеличить число патронов в ячейке
+				if( Config.Items?.StackMaxSize > 0 && baseItem.Parent == BaseClasses.AMMO && baseItem.Properties.StackMaxSize != null )
+				{
+					baseItem.Properties.StackMaxSize += Config.Items?.StackMaxSize;
+				}				
+			}
+
+			// Множитель времени постройки в убежище. Меньше - быстрее. При -1 мгновенная постройка	
+			foreach( var area in hideout.Areas )
+			{
+				foreach( var stage in area.Stages )
+				{
+					if( stage.Value.ConstructionTime > 0 && Config.Items?.HideoutConstMult != -1 )
 					{
-						extract.ExfiltrationTime = 10;  // 10 Секунд на ожидание
+						stage.Value.ConstructionTime = Math.Max( 5, ( int )( stage.Value.ConstructionTime * Config.Items?.HideoutConstMult ) );
+					}
+					else
+					{
+						stage.Value.ConstructionTime = 0;
 					}
 				}
 			}
 
-			foreach( var extract in map.Base.Exits )
+			// Множитель времени производства
+			foreach( var area in hideout.Production.Recipes )
 			{
-				// Выходы с шансом всегда доступны
-				if( extract.Name != "EXFIL_Train" )
+				if( area.Continuous == false && area.ProductionTime >= 1 )
 				{
-					extract.Chance = 100;
-				}
-
-				// Совместный выход
-				if( extract.RequirementTip == "EXFIL_Cooperate" /*или "PassageRequirement": "ScavCooperation"*/ )
-				{
-					extract.PassageRequirement = RequirementState.None;
-					extract.ExfiltrationType = ExfiltrationType.Individual;
-					extract.Id = "";
-					extract.Count = 0;
-					extract.PlayersCount = 0;
-					extract.RequirementTip = "";
-					//! Протестировать
-					if( extract.RequiredSlot != null )
+					if( Config.Items?.HideoutProdMult != -1 )
 					{
-						extract.RequiredSlot = EquipmentSlots.SecuredContainer;
+						area.ProductionTime = Math.Max( 5, ( int )( area.ProductionTime * Config.Items?.HideoutProdMult ) );
+					}
+					else
+					{
+						area.ProductionTime = 10;
+					}
+				}			
+			}
+
+			// Возможность продавать биткоин на барахолке
+			if( Config.Items?.BitcoinSellOnRagfair == true )
+			{
+				items[ ItemTpl.BARTER_PHYSICAL_BITCOIN ].Properties.CanSellOnRagfair = true;
+			}
+
+			// Время применения Surv12. Указывать точное время в секундах
+			if( Config.Items?.Surv12UseTime > 0 )
+			{
+				items[ ItemTpl.MEDICAL_SURV12_FIELD_SURGICAL_KIT ].Properties.MedUseTime = Config.Items?.Surv12UseTime;
+			}
+
+			// У всех торговцев товар "найден в рейде"
+			if( Config.Items?.TraderPurchasesFoundInRaid == true )
+			{
+				traderConfig.PurchasesAreFoundInRaid = true;
+			}
+
+			// Изменить размер защищённого контейнера
+			if( Config.Items?.SecureContainers?.Enable == true )
+			{
+				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsH = Config.Items?.SecureContainers?.HSize;
+				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsV = Config.Items?.SecureContainers?.VSize;
+			}
+
+			// logger.LogWithColor( $"1 = {Config.Items?.SecureContainers?.Secure_Container_Name}", LogTextColor.Cyan );
+		}
+
+		if( Config.Weapons?.Enable == true )
+		{
+			// Ремонт не изнашивает броню
+			if( Config.Weapons?.OpArmorRepair == true )
+			{
+				foreach( var armormats in globals.ArmorMaterials.Values )
+				{
+					armormats.MaxRepairDegradation = 0;
+					armormats.MinRepairDegradation = 0;
+					armormats.MaxRepairKitDegradation = 0;
+					armormats.MinRepairKitDegradation = 0;
+				}
+			}
+
+			if( Config.Weapons?.OpGunRepair == true )
+			{
+				// Ремонт не изнашивает оружие
+				foreach( var item in items.Values )
+				{
+					if( item.Properties?.MaxRepairDegradation != null && item.Properties.MaxRepairKitDegradation != null )
+					{
+						item.Properties.MinRepairDegradation = 0;
+						item.Properties.MaxRepairDegradation = 0;
+						item.Properties.MinRepairKitDegradation = 0;
+						item.Properties.MaxRepairKitDegradation = 0;
 					}
 				}
 			}
-		}
-		///****************************************************************
 
-		///****************************************************************
-		// Множитель времени постройки в убежище. Меньше - быстрее. При -1 мгновенная постройка
-		foreach( var area in hideout.Areas )
-		{
-			foreach( var stage in area.Stages.Values )
+			foreach( var id in items.Keys )
 			{
-				stage.ConstructionTime = 0;
+				var baseItem = items[ id ];
+
+				// Без перегрева оружия
+				if( Config.Weapons?.WeaponHeatOff == true && baseItem.Properties.AllowOverheat != null )
+				{
+					baseItem.Properties.AllowOverheat = false;
+				}
+
+				// Процент уменьшения/увеличения времени зарядки магазина
+				if( Config.Weapons?.LoadUnloadModifier > 0 && baseItem.Parent == BaseClasses.MAGAZINE && baseItem.Properties?.LoadUnloadModifier != null )
+				{
+					baseItem.Properties.LoadUnloadModifier = Config.Weapons?.LoadUnloadModifier;
+				}
+
 			}
 		}
 
-		// Множитель времени производства
-		foreach( var recipe in hideout.Production.Recipes )
-		{
-			if( recipe.Continuous == false && recipe.ProductionTime > 10 )
-			{
-				recipe.ProductionTime = 10;
-			}
-		}
-		///****************************************************************
 
 		//logger.Info( "	------------------------------End" );
 
