@@ -85,9 +85,25 @@ public class KMOD(
 
 					baseItem.Properties.MaximumNumberOfUsage = 0;
 				}
-								
-				// Насколько увеличить число патронов в ячейке
-				if( Config.Items?.StackMaxSize > 0 && baseItem.Parent == BaseClasses.AMMO && baseItem.Properties.StackMaxSize != null )
+                // Полное обнаружение
+                if (baseItem.Properties?.ExaminedByDefault != null)
+                {
+                    baseItem.Properties.ExaminedByDefault = true;
+                }
+
+                // Ножны можно обыскать
+                if (baseItem.Properties?.Unlootable != null)
+                {
+                    baseItem.Properties.Unlootable = false;
+                }
+                // Отключить чёрный список BSG
+                if (baseItem.Properties?.CanSellOnRagfair != null)
+                {
+                    baseItem.Properties.CanSellOnRagfair = true;
+                }
+
+                // Насколько увеличить число патронов в ячейке
+                if ( Config.Items?.StackMaxSize > 0 && baseItem.Parent == BaseClasses.AMMO && baseItem.Properties.StackMaxSize != null )
 				{
 					baseItem.Properties.StackMaxSize += Config.Items?.StackMaxSize;
 				}				
