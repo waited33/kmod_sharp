@@ -21,19 +21,19 @@ namespace KMOD;
 
 public record ModMetadata : AbstractModMetadata
 {
-	public override string? ModGuid { get; set; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
-	public override string? Name { get; set; } = "KMOD";
-	public override string? Author { get; set; } = "Krinkels";
+	public override string? ModGuid { get; init; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
+	public override string? Name { get; init; } = "KMOD";
+	public override string? Author { get; init; } = "Krinkels";
 	public override List<string>? Contributors { get; set; } = new() { "", "" };
-	public override string? Version { get; set; } = "1.4.0";
-	public override string? SptVersion { get; set; } = "4.0.0";
+	public override string? Version { get; init; } = "1.4.0";
+	public override string? SptVersion { get; init; } = "4.0.0";
 	public override List<string>? LoadBefore { get; set; } = null;
 	public override List<string>? LoadAfter { get; set; } = null;
 	public override List<string>? Incompatibilities { get; set; } = null;
 	public override Dictionary<string, string>? ModDependencies { get; set; } = null;
 	public override string? Url { get; set; } = "https://github.com/Krinkelss/kmod_sharp";
 	public override bool? IsBundleMod { get; set; } = false;
-	public override string? Licence { get; set; } = "MIT";
+	public override string? License { get; init; } = "MIT";
 }
 
 [Injectable( TypePriority = OnLoadOrder.PostDBModLoader + 1 )]
@@ -160,11 +160,11 @@ public class KMOD(
 			}
 
 			// Изменить размер защищённого контейнера
-			if( Config.Items?.SecureContainers?.Enable == true )
-			{
-				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsH = Config.Items?.SecureContainers?.HSize;
-				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsV = Config.Items?.SecureContainers?.VSize;
-			}
+			//if( Config.Items?.SecureContainers?.Enable == true )
+			//{
+			//	items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsH = Config.Items?.SecureContainers?.HSize;
+			//	items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsV = Config.Items?.SecureContainers?.VSize;
+			//}
 
 			// logger.LogWithColor( $"1 = {Config.Items?.SecureContainers?.Secure_Container_Name}", LogTextColor.Cyan );
 		}
