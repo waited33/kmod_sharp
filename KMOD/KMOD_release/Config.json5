@@ -31,12 +31,14 @@
 			"VSize":5						// По вертикали
 		}		
 	},
-	"Weapons":
-	{
-		"Enable": true,						// Вкл/выкл
-		"OpArmorRepair":true,				// Ремонт не изнашивает броню
-		"OpGunRepair":true,					// Ремонт не изнашивает оружие
-		"WeaponHeatOff":true,				// Без перегрева оружия		
-		"LoadUnloadModifier":-30,			// Отрицательное число уменьшает время заряда магазина	
+	"Weapons": {
+		"Enable": true, // Вкл/выкл
+		"OpArmorRepair": true, // Ремонт не изнашивает броню
+		"OpGunRepair": true, // Ремонт не изнашивает оружие
+		"WeaponHeatOff": true, // Без перегрева оружия
+		"ExaminedByDefault": true, // Полное обнаружение	
+		"Unlootable": false, // Ножны можно обыскать	
+		"CanSellOnRagfair": true, // Отключить чёрный список BSG	
+		"LoadUnloadModifier": -30 // Отрицательное число уменьшает время заряда магазина	
 	}
 }
