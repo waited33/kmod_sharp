@@ -17,9 +17,9 @@
 			<CopyLocal>true</CopyLocal>
 			<CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
 		</PackageReference>
-		<PackageReference Include="SPTarkov.Common" Version="4.0.0-prerelease24" />
-		<PackageReference Include="SPTarkov.DI" Version="4.0.0-prerelease24" />
-		<PackageReference Include="SPTarkov.Server.Core" Version="4.0.0-prerelease24" />
+		<PackageReference Include="SPTarkov.Common" Version="4.0.0-prerelease29" />
+		<PackageReference Include="SPTarkov.DI" Version="4.0.0-prerelease29" />
+		<PackageReference Include="SPTarkov.Server.Core" Version="4.0.0-prerelease29" />
 	</ItemGroup>
   
 <Target Name="CopyOutputToProjectDir" AfterTargets="Build">

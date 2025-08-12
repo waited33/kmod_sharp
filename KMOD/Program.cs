@@ -21,19 +21,19 @@ namespace KMOD;
 
 public record ModMetadata : AbstractModMetadata
 {
-	public override string? ModGuid { get; set; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
-	public override string? Name { get; set; } = "KMOD";
-	public override string? Author { get; set; } = "Krinkels";
+	public override string? ModGuid { get; init; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
+	public override string? Name { get; init; } = "KMOD";
+	public override string? Author { get; init; } = "Krinkels";
 	public override List<string>? Contributors { get; set; } = new() { "", "" };
-	public override string? Version { get; set; } = "1.4.0";
-	public override string? SptVersion { get; set; } = "4.0.0";
-	public override List<string>? LoadBefore { get; set; } = null;
-	public override List<string>? LoadAfter { get; set; } = null;
-	public override List<string>? Incompatibilities { get; set; } = null;
-	public override Dictionary<string, string>? ModDependencies { get; set; } = null;
+	public override SemanticVersioning.Version Version { get; } = new( "1.4.0");
+	public override SemanticVersioning.Version SptVersion { get; } = new( "4.0.0");
+	public override List<string>? LoadBefore { get; set; };
+	public override List<string>? LoadAfter { get; set; };
+	public override List<string>? Incompatibilities { get; set; };
+	public override Dictionary<string, SemanticVersioning.Version>? ModDependencies { get; set; };
 	public override string? Url { get; set; } = "https://github.com/Krinkelss/kmod_sharp";
 	public override bool? IsBundleMod { get; set; } = false;
-	public override string? Licence { get; set; } = "MIT";
+	public override string? License { get; init; } = "MIT";
 }
 
 [Injectable( TypePriority = OnLoadOrder.PostDBModLoader + 1 )]
@@ -70,6 +70,7 @@ public class KMOD(
 			return Task.CompletedTask;
 		}
 
+		// Настройка предметов
 		if( Config.Items?.Enable == true )
 		{
 			foreach( var id in items.Keys )
@@ -90,7 +91,7 @@ public class KMOD(
 				if( Config.Items?.StackMaxSize > 0 && baseItem.Parent == BaseClasses.AMMO && baseItem.Properties.StackMaxSize != null )
 				{
 					baseItem.Properties.StackMaxSize += Config.Items?.StackMaxSize;
-				}				
+				}
 			}
 
 			// Множитель времени постройки в убежище. Меньше - быстрее. При -1 мгновенная постройка	
@@ -143,20 +144,8 @@ public class KMOD(
 				traderConfig.PurchasesAreFoundInRaid = true;
 			}
 
-			// Изменить размер защищённого контейнера
-			if( Config.Items?.SecureContainers?.Enable == true )
-			{
-				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsH = Config.Items?.SecureContainers?.HSize;
-				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsV = Config.Items?.SecureContainers?.VSize;
-			}
-
-			// logger.LogWithColor( $"1 = {Config.Items?.SecureContainers?.Secure_Container_Name}", LogTextColor.Cyan );
-		}
-
-		if( Config.Weapons?.Enable == true )
-		{
 			// Ремонт не изнашивает броню
-			if( Config.Weapons?.OpArmorRepair == true )
+			if( Config.Items?.OpArmorRepair == true )
 			{
 				foreach( var armormats in globals.ArmorMaterials.Values )
 				{
@@ -167,9 +156,9 @@ public class KMOD(
 				}
 			}
 
-			if( Config.Weapons?.OpGunRepair == true )
+			// Ремонт не изнашивает оружие
+			if( Config.Items?.OpGunRepair == true )
 			{
-				// Ремонт не изнашивает оружие
 				foreach( var item in items.Values )
 				{
 					if( item.Properties?.MaxRepairDegradation != null && item.Properties.MaxRepairKitDegradation != null )
@@ -182,6 +171,19 @@ public class KMOD(
 				}
 			}
 
+			// Изменить размер защищённого контейнера
+			if( Config.Items?.SecureContainers?.Enable == true )
+			{
+				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsH = Config.Items?.SecureContainers?.HSize;
+				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsV = Config.Items?.SecureContainers?.VSize;
+			}
+
+			// logger.LogWithColor( $"1 = {Config.Items?.SecureContainers?.Secure_Container_Name}", LogTextColor.Cyan );
+		}
+
+		// Настройка оружия
+		if( Config.Weapons?.Enable == true )
+		{			
 			foreach( var id in items.Keys )
 			{
 				var baseItem = items[ id ];
@@ -197,8 +199,50 @@ public class KMOD(
 				{
 					baseItem.Properties.LoadUnloadModifier = Config.Weapons?.LoadUnloadModifier;
 				}
-
 			}
+		}
+
+		// Настройки пользователя
+		if( Config.Player?.Enable == true )
+		{
+			// Бесконечная выносливость
+			if( Config.Player?.UnlimitedStamina == true )
+			{				
+				globals.Stamina.Capacity = 500;
+				globals.Stamina.BaseRestorationRate = 500;
+				globals.Stamina.StaminaExhaustionCausesJiggle = false;
+				globals.Stamina.StaminaExhaustionStartsBreathSound = false;
+				globals.Stamina.StaminaExhaustionRocksCamera = false;
+				globals.Stamina.SprintDrainRate = 0;
+				globals.Stamina.JumpConsumption = 0;
+				globals.Stamina.AimDrainRate = 0;
+				globals.Stamina.SitToStandConsumption = 0;
+			}
+
+			// Множитель опыта навыкам
+			globals.SkillsSettings.SkillProgressRate = Config.Player?.SkillProgMult ?? 1;
+
+			// Множитель прокачки оружия
+			globals.SkillsSettings.WeaponSkillProgressRate = Config.Player?.WeaponSkillMult ?? 1;
+
+			//--------------------------
+			// Сколько длится усталость
+			globals.SkillFatigueReset = Config.Player.Skills.SkillFatigueReset;
+
+			// Очки бодрости
+			globals.SkillFreshPoints = Config.Player.Skills.SkillFreshPoints;
+
+			// % эффективности "свежих" навыков
+			globals.SkillFreshEffectiveness = Config.Player.Skills.SkillFreshEffectiveness;
+
+			// Усталость за очко
+			globals.SkillFatiguePerPoint = Config.Player.Skills.SkillFatiguePerPoint;
+
+			// Опыт при максимальной усталости
+			globals.SkillMinEffectiveness = Config.Player.Skills.SkillMinEffect;
+
+			// Очки перед наступлением усталости
+			globals.SkillPointsBeforeFatigue = Config.Player.Skills.SkillPointsBeforeFatigue;
 		}
 
 

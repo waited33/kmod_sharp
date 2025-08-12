@@ -61,12 +61,12 @@ public class ITEMS
 	/// Одноразовые ключи используются только единожды
 	/// </summary>
 	public bool AvoidSingleKeys { get; set; }
-		
+
 	/// <summary>
 	/// Насколько увеличить число патронов в ячейке
 	/// </summary>
 	public int StackMaxSize { get; set; }
-		
+
 	/// <summary>
 	/// Множитель времени постройки в убежище. Меньше - быстрее. При -1 мгновенная постройка
 	/// </summary>
@@ -93,6 +93,16 @@ public class ITEMS
 	public bool TraderPurchasesFoundInRaid { get; set; }
 
 	/// <summary>
+	/// Ремонт не изнашивает броню
+	/// </summary>
+	public bool OpArmorRepair { get; set; }
+
+	/// <summary>
+	/// Ремонт не изнашивает оружие
+	/// </summary>
+	public bool OpGunRepair { get; set; }
+
+	/// <summary>
 	/// Защищённый контейнер
 	/// </summary>
 	public SecureContainer? SecureContainers { get; set; }
@@ -109,16 +119,6 @@ public class WEAPON
 	public bool Enable { get; set; }
 
 	/// <summary>
-	/// Ремонт не изнашивает броню
-	/// </summary>
-	public bool OpArmorRepair { get; set; }
-
-	/// <summary>
-	/// Ремонт не изнашивает оружие
-	/// </summary>
-	public bool OpGunRepair { get; set; }
-
-	/// <summary>
 	/// Без перегрева оружия
 	/// </summary>
 	public bool WeaponHeatOff { get; set; }
@@ -129,12 +129,75 @@ public class WEAPON
 	/// </summary>
 	public int LoadUnloadModifier { get; set; }
 }
+//************************************************************************************
 
+//************************************************************************************
+//************************Уменмя******************************************************
+public class Skills
+{
+	/// <summary>
+	/// Сколько длится усталость
+	/// </summary>
+	public int SkillFatigueReset { get; set; }
 
+	/// <summary>
+	/// Очки бодрости
+	/// </summary>
+	public int SkillFreshPoints { get; set; }
+
+	/// <summary>
+	/// % эффективности "свежих" навыков
+	/// </summary>
+	public int SkillFreshEffectiveness { get; set; }
+
+	/// <summary>
+	/// Усталость за очко
+	/// </summary>
+	public int SkillFatiguePerPoint { get; set; }
+
+	/// <summary>
+	/// Опыт при максимальной усталости
+	/// </summary>
+	public int SkillMinEffect { get; set; }
+
+	/// <summary>
+	/// Очки перед наступлением усталости
+	/// </summary>
+	public int SkillPointsBeforeFatigue { get; set; }
+}
+
+public class PLAYER
+{
+	/// <summary>
+	/// Вкл/выкл настройки персонажа
+	/// </summary>
+	public bool Enable { get; set; }
+
+	/// <summary>
+	/// Бесконечная выносливость
+	/// </summary>
+	public bool UnlimitedStamina { get; set; }
+
+	/// <summary>
+	/// Множитель опыта навыкам
+	/// </summary>
+	public int? SkillProgMult { get; set; }
+
+	/// <summary>
+	/// Множитель прокачки оружия
+	/// </summary>
+	public int WeaponSkillMult { get; set; }
+
+	/// <summary>
+	/// Прокачка умений персонажа
+	/// </summary>
+	public Skills Skills { get; set; }
+}
 //************************************************************************************
 
 public class KConfig
 {
 	public ITEMS Items { get; set; }
 	public WEAPON Weapons { get; set; }
+	public PLAYER Player { get; set; }
 }
