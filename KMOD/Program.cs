@@ -25,12 +25,12 @@ public record ModMetadata : AbstractModMetadata
 	public override string? Name { get; init; } = "KMOD";
 	public override string? Author { get; init; } = "Krinkels";
 	public override List<string>? Contributors { get; set; } = new() { "", "" };
-	public override string? Version { get; init; } = "1.4.0";
-	public override string? SptVersion { get; init; } = "4.0.0";
+	public override SemanticVersioning.Version Version { get; } = new("1.4.0");
+	public override SemanticVersioning.Version SptVersion { get; } = new("4.0.0");
 	public override List<string>? LoadBefore { get; set; } = null;
 	public override List<string>? LoadAfter { get; set; } = null;
 	public override List<string>? Incompatibilities { get; set; } = null;
-	public override Dictionary<string, string>? ModDependencies { get; set; } = null;
+	public override Dictionary<string, SemanticVersioning.Version>? ModDependencies { get; set; } = null;
 	public override string? Url { get; set; } = "https://github.com/Krinkelss/kmod_sharp";
 	public override bool? IsBundleMod { get; set; } = false;
 	public override string? License { get; init; } = "MIT";
