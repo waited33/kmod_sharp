@@ -191,13 +191,13 @@ public class PLAYER
 	/// <summary>
 	/// Прокачка умений персонажа
 	/// </summary>
-	public Skills Skills { get; set; }
+	public Skills? Skills { get; set; }
 }
 //************************************************************************************
 
 public class KConfig
 {
-	public ITEMS Items { get; set; }
-	public WEAPON Weapons { get; set; }
-	public PLAYER Player { get; set; }
+	public ITEMS? Items { get; set; }
+	public WEAPON? Weapons { get; set; }
+	public PLAYER? Player { get; set; }
 }

@@ -24,15 +24,13 @@ public record ModMetadata : AbstractModMetadata
 	public override string? ModGuid { get; init; } = "74be107d-80b0-47e5-8b4c-84d2e4ff5850";
 	public override string? Name { get; init; } = "KMOD";
 	public override string? Author { get; init; } = "Krinkels";
-	public override List<string>? Contributors { get; set; } = new() { "", "" };
-	public override SemanticVersioning.Version Version { get; } = new( "1.4.0");
-	public override SemanticVersioning.Version SptVersion { get; } = new( "4.0.0");
-	public override List<string>? LoadBefore { get; set; };
-	public override List<string>? LoadAfter { get; set; };
-	public override List<string>? Incompatibilities { get; set; };
-	public override Dictionary<string, SemanticVersioning.Version>? ModDependencies { get; set; };
-	public override string? Url { get; set; } = "https://github.com/Krinkelss/kmod_sharp";
-	public override bool? IsBundleMod { get; set; } = false;
+	public override List<string>? Contributors { get; init; }
+	public override SemanticVersioning.Version Version { get; init; } = new( "1.4.0" );
+	public override SemanticVersioning.Version SptVersion { get; init; } = new( "4.0.0" );
+	public override List<string>? Incompatibilities { get; init; }
+	public override Dictionary<string, SemanticVersioning.Version>? ModDependencies { get; init; }
+	public override string? Url { get; init; } = "https://github.com/Krinkelss/kmod_sharp";
+	public override bool? IsBundleMod { get; init; } = false;
 	public override string? License { get; init; } = "MIT";
 }
 
@@ -58,7 +56,7 @@ public class KMOD(
 		// ******************************************************************************
 		// Загружаем наши настройки
 		var pathToMod = modHelper.GetAbsolutePathToModFolder( Assembly.GetExecutingAssembly() );
-		
+
 		KConfig Config = null;
 		try
 		{
@@ -66,7 +64,7 @@ public class KMOD(
 		}
 		catch( Exception e )
 		{
-			logger.Error( $"[KMOD] Ошибка при загрузке Config.json5: {e.Message}" );			
+			logger.Error( $"[KMOD] Ошибка при загрузке Config.json5: {e.Message}" );
 			return Task.CompletedTask;
 		}
 
@@ -85,8 +83,10 @@ public class KMOD(
 						continue;
 
 					baseItem.Properties.MaximumNumberOfUsage = 0;
+
+					baseItem.Properties.MaximumNumberOfUsage = 0;
 				}
-								
+
 				// Насколько увеличить число патронов в ячейке
 				if( Config.Items?.StackMaxSize > 0 && baseItem.Parent == BaseClasses.AMMO && baseItem.Properties.StackMaxSize != null )
 				{
@@ -123,7 +123,7 @@ public class KMOD(
 					{
 						area.ProductionTime = 10;
 					}
-				}			
+				}
 			}
 
 			// Возможность продавать биткоин на барахолке
@@ -172,18 +172,18 @@ public class KMOD(
 			}
 
 			// Изменить размер защищённого контейнера
-			if( Config.Items?.SecureContainers?.Enable == true )
+			/*if( Config.Items?.SecureContainers?.Enable == true )
 			{
 				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsH = Config.Items?.SecureContainers?.HSize;
 				items[ Config.Items?.SecureContainers?.Secure_Container_Name ].Properties.Grids[ 0 ].Props.CellsV = Config.Items?.SecureContainers?.VSize;
-			}
+			}*/
 
 			// logger.LogWithColor( $"1 = {Config.Items?.SecureContainers?.Secure_Container_Name}", LogTextColor.Cyan );
 		}
 
 		// Настройка оружия
 		if( Config.Weapons?.Enable == true )
-		{			
+		{
 			foreach( var id in items.Keys )
 			{
 				var baseItem = items[ id ];
@@ -207,7 +207,7 @@ public class KMOD(
 		{
 			// Бесконечная выносливость
 			if( Config.Player?.UnlimitedStamina == true )
-			{				
+			{
 				globals.Stamina.Capacity = 500;
 				globals.Stamina.BaseRestorationRate = 500;
 				globals.Stamina.StaminaExhaustionCausesJiggle = false;
@@ -220,29 +220,29 @@ public class KMOD(
 			}
 
 			// Множитель опыта навыкам
-			globals.SkillsSettings.SkillProgressRate = Config.Player?.SkillProgMult ?? 1;
+			globals.SkillsSettings.SkillProgressRate = Config.Player?.SkillProgMult ?? 0.4;
 
 			// Множитель прокачки оружия
 			globals.SkillsSettings.WeaponSkillProgressRate = Config.Player?.WeaponSkillMult ?? 1;
 
 			//--------------------------
 			// Сколько длится усталость
-			globals.SkillFatigueReset = Config.Player.Skills.SkillFatigueReset;
+			globals.SkillFatigueReset = Config.Player?.Skills?.SkillFatigueReset ?? 200;
 
 			// Очки бодрости
-			globals.SkillFreshPoints = Config.Player.Skills.SkillFreshPoints;
+			globals.SkillFreshPoints = Config.Player?.Skills?.SkillFreshPoints ?? 1;
 
 			// % эффективности "свежих" навыков
-			globals.SkillFreshEffectiveness = Config.Player.Skills.SkillFreshEffectiveness;
+			globals.SkillFreshEffectiveness = Config.Player?.Skills?.SkillFreshEffectiveness ?? 1.3;
 
 			// Усталость за очко
-			globals.SkillFatiguePerPoint = Config.Player.Skills.SkillFatiguePerPoint;
+			globals.SkillFatiguePerPoint = Config.Player?.Skills?.SkillFatiguePerPoint ?? 0.6;
 
 			// Опыт при максимальной усталости
-			globals.SkillMinEffectiveness = Config.Player.Skills.SkillMinEffect;
+			globals.SkillMinEffectiveness = Config.Player?.Skills?.SkillMinEffect ?? 0.0001;
 
 			// Очки перед наступлением усталости
-			globals.SkillPointsBeforeFatigue = Config.Player.Skills.SkillPointsBeforeFatigue;
+			globals.SkillPointsBeforeFatigue = Config.Player?.Skills?.SkillPointsBeforeFatigue ?? 1;
 		}
 
 
@@ -256,7 +256,7 @@ public class KMOD(
 public class KTRADER_SIDR(
 	KTRADER TRADER
 ) : IOnLoad
-{	
+{
 	public Task OnLoad()
 	{
 		TRADER.SIDR_Enable();
@@ -339,19 +339,3 @@ public class WPMOD(
 		return Task.CompletedTask;
 	}
 }
-
-/**/
-
-/*
-[Injectable( TypePriority = OnLoadOrder.PostDBModLoader + 1 )]
-public record GIFT(
-	ISptLogger<GIFT> logger,
-	KGIFT KGIFT // This is a custom class we add for this mod, we made it injectable so it can be accessed like other classes here
-) : IOnLoad
-{
-	public Task OnLoad()
-	{
-		KGIFT.KGIFT_Enable();
-		return Task.CompletedTask;
-	}
-}*/
