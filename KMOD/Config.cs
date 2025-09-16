@@ -62,10 +62,25 @@ public class ITEMS
 	/// </summary>
 	public bool AvoidSingleKeys { get; set; }
 
-	/// <summary>
-	/// Насколько увеличить число патронов в ячейке
-	/// </summary>
-	public int StackMaxSize { get; set; }
+    /// <summary>
+    /// Полное обнаружение
+    /// </summary>
+    public bool ExaminedByDefault { get; set; }
+
+    /// <summary>
+    /// Ножны можно обыскать
+    /// </summary>
+    public bool Unlootable { get; set; }
+
+    /// <summary>
+    /// Отключить чёрный список BSG
+    /// </summary>
+    public bool CanSellOnRagfair { get; set; }
+
+    /// <summary>
+    /// Насколько увеличить число патронов в ячейке
+    /// </summary>
+    public int StackMaxSize { get; set; }
 
 	/// <summary>
 	/// Множитель времени постройки в убежище. Меньше - быстрее. При -1 мгновенная постройка
