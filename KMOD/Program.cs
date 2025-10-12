@@ -73,7 +73,6 @@ public class KMOD(
 		// Настройка предметов
 		if( Config.Items?.Enable == true )
 		{
-			logger.Info( "Config.Items?.Enable == true	------------------------------End" );
 			foreach( var id in items.Keys )
 			{
 				var baseItem = items[ id ];
@@ -187,8 +186,6 @@ public class KMOD(
 		// Настройка оружия
 		if( Config.Weapons?.Enable == true )
 		{
-			logger.Info( "Config.Weapons?.Enable == true	------------------------------End" );
-
 			foreach( var id in items.Keys )
 			{
 				var baseItem = items[ id ];
@@ -252,6 +249,9 @@ public class KMOD(
 
 		if( Config.Raids?.Enable == true )
 		{
+			var mapsDb = databaseService.GetLocations();
+			var mapsDict = mapsDb.GetDictionary();
+
 			// Выход с любой стороны
 			if( Config.Raids.ExtendedExtracts == true )
 			{
@@ -268,12 +268,7 @@ public class KMOD(
 				};
 
 				foreach( var ( key, cap ) in botConfig.MaxBotCap )
-				{
-					/*if( !locations.TryGetValue( locationKey, out var map ) )
-					{
-						continue;
-					}*/
-
+				{					
 					if( entryPointsMap.TryGetValue( key, out var entryPoints ) )
 					{
 						SPTarkov.Server.Core.Models.Eft.Common.Location? Map = databaseService.GetLocation( key );
@@ -297,12 +292,17 @@ public class KMOD(
 			// Выходы с шансом всегда доступны
 			if( Config.Raids.ChanceExtracts == true )
 			{
-				foreach( var (key, cap) in botConfig.MaxBotCap )
+				foreach( var ( key, cap ) in botConfig.MaxBotCap )
 				{
+					if( !mapsDict.TryGetValue( mapsDb.GetMappedKey( key ), out var map ) )
+					{
+						continue;
+					}
+
 					SPTarkov.Server.Core.Models.Eft.Common.Location? Map = databaseService.GetLocation( key );
 					if( Map == null )
 						continue;
-
+										
 					foreach( var exit in Map.Base.Exits )
 					{
 						//if( exit.Name != "EXFIL_Train" )
@@ -317,12 +317,17 @@ public class KMOD(
 			// Разрешить совместные выходы в одного
 			if( Config.Raids.FreeCoop == true )
 			{
-				foreach( var (key, cap) in botConfig.MaxBotCap )
+				foreach( var ( key, cap ) in botConfig.MaxBotCap )
 				{
+					if( !mapsDict.TryGetValue( mapsDb.GetMappedKey( key ), out var map ) )
+					{
+						continue;
+					}
+
 					SPTarkov.Server.Core.Models.Eft.Common.Location? Map = databaseService.GetLocation( key );
 					if( Map == null )
 						continue;
-
+										
 					foreach( var exit in Map.Base.Exits )
 					{
 						if( exit.PassageRequirement == SPTarkov.Server.Core.Models.Enums.RequirementState.ScavCooperation )
