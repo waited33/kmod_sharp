@@ -1,23 +1,20 @@
 {
 	"Items":
 	{
-		"Enable": true,							// Вкл/выкл настройки предметов
-		"RemoveKeysUsageNumber": true,			// Убрать лимит ключей
-		"AvoidSingleKeys": true,				// Одноразовые ключи используются только единожды		
-		"StackMaxSize": 150,					// Насколько увеличить число патронов в ячейке	
+		"Enable":true,						// Вкл/выкл настройки предметов
+		"RemoveKeysUsageNumber":true,		// Убрать лимит ключей
+		"AvoidSingleKeys":true,				// Одноразовые ключи используются только единожды		
+		"StackMaxSize":150,					// Насколько увеличить число патронов в ячейке	
 					
-		"HideoutConstMult": -1,					// Множитель времени постройки в убежище. Меньше - быстрее. При -1 мгновенная постройка
-		"HideoutProdMult": -1,					// Множитель времени производства. Меньше - быстрее		
-		"BitcoinSellOnRagfair": true,			// Возможность продавать биткоин на барахолке
-		"Surv12UseTime": 10,					// Время применения Surv12. Указывать точное время в секундах
-		"TraderPurchasesFoundInRaid": true,		// У всех торговцев товар "найден в рейде"
-		
-		"OpArmorRepair": true,					// Ремонт не изнашивает броню
-		"OpGunRepair": true,					// Ремонт не изнашивает оружие
+		"HideoutConstMult":-1,				// Множитель времени постройки в убежище. Меньше - быстрее. При -1 мгновенная постройка
+		"HideoutProdMult":-1,				// Множитель времени производства. Меньше - быстрее		
+		"BitcoinSellOnRagfair": true,		// Возможность продавать биткоин на барахолке
+		"Surv12UseTime":10,					// Время применения Surv12. Указывать точное время в секундах
+		"TraderPurchasesFoundInRaid":true,	// У всех торговцев товар "найден в рейде"
 		
 		"SecureContainers":
 		{
-			"Enable": true,						// Вкл/выкл редактирование размера контейнера
+			"Enable": true,					// Вкл/выкл редактирование размера контейнера
 			
 			// Имя защищённого контейнера. Доступны значения:
 			// 544a11ac4bdc2d470e8b456a - SECURE_CONTAINER_ALPHA
@@ -30,31 +27,48 @@
 			// 664a55d84a90fc2c8a6305c9 - SECURE_CONTAINER_THETA
 			"Secure_Container_Name": "676008db84e242067d0dc4c9",
 			
-			"HSize": 5,							// По горизонтали
-			"VSize": 5							// По вертикали
+			"HSize":5,						// По горизонтали
+			"VSize":5						// По вертикали
 		}		
 	},
 	"Weapons":
 	{
-		"Enable": true,							// Вкл/выкл
-		"WeaponHeatOff": true,					// Без перегрева оружия		
-		"LoadUnloadModifier": -30				// Отрицательное число уменьшает время заряда магазина	
+		"Enable": true,						// Вкл/выкл
+		"OpArmorRepair":true,				// Ремонт не изнашивает броню
+		"OpGunRepair":true,					// Ремонт не изнашивает оружие
+		"WeaponHeatOff":true,				// Без перегрева оружия		
+		"LoadUnloadModifier":-30,			// Отрицательное число уменьшает время заряда магазина	
 	},
 	
 	"Player":
 	{
 		"Enable": true,
-		"UnlimitedStamina":true,				// Бесконечная выносливость
-		"SkillProgMult":10,						// Множитель опыта навыкам
-		"WeaponSkillMult": 5,					// Множитель прокачки оружия
-		"Skill": 
-		{
-			"SkillFatigueReset": 0,				// Сколько длится усталость
-			"SkillFreshPoints": 10,				// Очки бодрости
-			"SkillFreshEffectiveness": 10,		// % эффективности "свежих" навыков
-			"SkillFatiguePerPoint": 0,			// Усталость за очко
-			"SkillMinEffect": 10,				// Опыт при максимальной усталости
-			"SkillPointsBeforeFatigue": 200		// Очки перед наступлением усталости
-		}
+		"UnlimitedStamina":true,			// Бесконечная выносливость
+		"SkillProgMult":10,					// Множитель опыта навыкам
+		"WeaponSkillMult":5,				// Множитель прокачки оружия
+		"Skills":{
+			"SkillFatigueReset":0,			// Сколько длится усталость
+			"SkillFreshPoints":10,			// Очки бодрости
+			"SkillFreshEffectiveness": 10,	// % эффективности "свежих" навыков
+			//"SkillFreshEffect":10,			// Множитель опыта при бодрости
+			"SkillFatiguePerPoint":0,		// Усталость за очко
+			"SkillMinEffect":10,				// Опыт при максимальной усталости
+			"SkillPointsBeforeFatigue":100	// Очки перед наступлением усталости
+		},
+	},
+	
+	"Raids":
+	{
+		"Enable":true,
+		"ExtendedExtracts":true,			// Выход с любой стороны
+		"ChanceExtracts":true,				// Выходы с шансом всегда доступны
+		"FreeCoop":true,					// Разрешить совместные выходы в одного
+				
+		//"IncreaseRaidTime":20,				// На сколько увеличить время рейдов
+				
+		
+		"EnableWinter":false,				// Принудительно включить снег на локациях. В противном случае будет с 1 декабря по 1 марта(я надеюсь на это)
+		
+		"CarExtractTime": 10				// Время выхода на машине, 10 секунд ожидания
 	}
 }

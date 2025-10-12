@@ -11,6 +11,7 @@ using SPTarkov.Server.Core.Models.Logging;
 using SPTarkov.Server.Core.Models.Spt.Config;
 using SPTarkov.Server.Core.Models.Spt.Hideout;
 using SPTarkov.Server.Core.Models.Spt.Mod;
+using SPTarkov.Server.Core.Models.Spt.Server;
 using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Servers;
 using SPTarkov.Server.Core.Services;
@@ -26,9 +27,9 @@ public record ModMetadata : AbstractModMetadata
 	public override string? Author { get; init; } = "Krinkels";
 	public override List<string>? Contributors { get; init; }
 	public override SemanticVersioning.Version Version { get; init; } = new( "1.4.0" );
-	public override SemanticVersioning.Version SptVersion { get; init; } = new( "4.0.0" );
+	public override SemanticVersioning.Range SptVersion { get; init; } = new( "4.0.0" );
 	public override List<string>? Incompatibilities { get; init; }
-	public override Dictionary<string, SemanticVersioning.Version>? ModDependencies { get; init; }
+	public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; }
 	public override string? Url { get; init; } = "https://github.com/Krinkelss/kmod_sharp";
 	public override bool? IsBundleMod { get; init; } = false;
 	public override string? License { get; init; } = "MIT";
@@ -50,8 +51,9 @@ public class KMOD(
 		Dictionary<MongoId, TemplateItem> items = databaseService.GetItems();
 		var hideout = databaseService.GetHideout();
 		TraderConfig traderConfig = _configServer.GetConfig<TraderConfig>();
-		SPTarkov.Server.Core.Models.Eft.Common.Config globals = databaseService.GetGlobals().Configuration;
-
+		SPTarkov.Server.Core.Models.Eft.Common.Config globals = databaseService.GetGlobals().Configuration;		
+		BotConfig botConfig = _configServer.GetConfig<BotConfig>();
+		
 
 		// ******************************************************************************
 		// Загружаем наши настройки
@@ -71,6 +73,7 @@ public class KMOD(
 		// Настройка предметов
 		if( Config.Items?.Enable == true )
 		{
+			logger.Info( "Config.Items?.Enable == true	------------------------------End" );
 			foreach( var id in items.Keys )
 			{
 				var baseItem = items[ id ];
@@ -184,6 +187,8 @@ public class KMOD(
 		// Настройка оружия
 		if( Config.Weapons?.Enable == true )
 		{
+			logger.Info( "Config.Weapons?.Enable == true	------------------------------End" );
+
 			foreach( var id in items.Keys )
 			{
 				var baseItem = items[ id ];
@@ -245,6 +250,99 @@ public class KMOD(
 			globals.SkillPointsBeforeFatigue = Config.Player?.Skills?.SkillPointsBeforeFatigue ?? 1;
 		}
 
+		if( Config.Raids?.Enable == true )
+		{
+			// Выход с любой стороны
+			if( Config.Raids.ExtendedExtracts == true )
+			{
+				Dictionary<string, string> entryPointsMap = new Dictionary<string, string>
+				{
+					{ "bigmap", "Customs,Boiler Tanks" },
+					{ "interchange", "MallSE,MallNW" },
+					{ "shoreline", "Village,Riverside" },
+					{ "woods", "House,Old Station" },
+					{ "lighthouse", "Tunnel,North" },
+					{ "tarkovstreets", "E1_2,E6_1,E2_3,E3_4,E4_5,E5_6,E6_1" },
+					{ "sandbox", "west,east" },
+					{ "sandbox_high", "west,east" }
+				};
+
+				foreach( var ( key, cap ) in botConfig.MaxBotCap )
+				{
+					/*if( !locations.TryGetValue( locationKey, out var map ) )
+					{
+						continue;
+					}*/
+
+					if( entryPointsMap.TryGetValue( key, out var entryPoints ) )
+					{
+						SPTarkov.Server.Core.Models.Eft.Common.Location? Map = databaseService.GetLocation( key );
+						if( Map == null )
+							continue;
+
+						foreach( var exit in Map.Base.Exits )
+						{
+							exit.EntryPoints = entryPoints;
+
+							// Выход на машине
+							if( exit.PassageRequirement == SPTarkov.Server.Core.Models.Enums.RequirementState.TransferItem )
+							{
+								exit.ExfiltrationTime = Config.Raids.CarExtractTime;
+							}
+						}
+					}
+				}
+			}
+
+			// Выходы с шансом всегда доступны
+			if( Config.Raids.ChanceExtracts == true )
+			{
+				foreach( var (key, cap) in botConfig.MaxBotCap )
+				{
+					SPTarkov.Server.Core.Models.Eft.Common.Location? Map = databaseService.GetLocation( key );
+					if( Map == null )
+						continue;
+
+					foreach( var exit in Map.Base.Exits )
+					{
+						//if( exit.Name != "EXFIL_Train" )
+						if( exit.PassageRequirement == SPTarkov.Server.Core.Models.Enums.RequirementState.Train )
+						{
+							exit.Chance = 100;
+						}
+					}
+				}
+			}
+
+			// Разрешить совместные выходы в одного
+			if( Config.Raids.FreeCoop == true )
+			{
+				foreach( var (key, cap) in botConfig.MaxBotCap )
+				{
+					SPTarkov.Server.Core.Models.Eft.Common.Location? Map = databaseService.GetLocation( key );
+					if( Map == null )
+						continue;
+
+					foreach( var exit in Map.Base.Exits )
+					{
+						if( exit.PassageRequirement == SPTarkov.Server.Core.Models.Enums.RequirementState.ScavCooperation )
+						{
+							exit.PassageRequirement = SPTarkov.Server.Core.Models.Enums.RequirementState.None;
+							exit.ExfiltrationType = SPTarkov.Server.Core.Models.Enums.ExfiltrationType.Individual;
+							exit.Id = "";
+							exit.Count = 0;
+							exit.PlayersCount = 0;
+							exit.PlayersCountPVE = 0;
+							exit.RequirementTip = "";
+							if( exit.RequiredSlot != null )
+							{
+								exit.RequiredSlot = null;
+							}
+						}
+					}
+				}
+			}
+		}
 
 		//logger.Info( "	------------------------------End" );
 

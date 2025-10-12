@@ -133,7 +133,7 @@ public class WEAPON
 
 //************************************************************************************
 //************************Уменмя******************************************************
-public class Skills
+public class SKILLS
 {
 	/// <summary>
 	/// Сколько длится усталость
@@ -186,12 +186,42 @@ public class PLAYER
 	/// <summary>
 	/// Множитель прокачки оружия
 	/// </summary>
-	public int WeaponSkillMult { get; set; }
+	public int? WeaponSkillMult { get; set; }
 
 	/// <summary>
 	/// Прокачка умений персонажа
 	/// </summary>
-	public Skills? Skills { get; set; }
+	public SKILLS? Skills { get; set; }
+}
+
+//************************************************************************************
+//************************Настройка рейда*********************************************
+public class RAIDS
+{
+	/// <summary>
+	/// Вкл/выкл настройки рейда
+	/// </summary>
+	public bool Enable { get; set; }
+
+	/// <summary>
+	/// Выход с любой стороны
+	/// </summary>
+	public bool ExtendedExtracts { get; set; }
+
+	/// <summary>
+	/// Выходы с шансом всегда доступны
+	/// </summary>
+	public bool ChanceExtracts { get; set; }
+
+	/// <summary>
+	/// Разрешить совместные выходы в одного
+	/// </summary>
+	public bool FreeCoop { get; set; }
+
+	/// <summary>
+	/// Время выхода на машине
+	/// </summary>
+	public int CarExtractTime { get; set; }
 }
 //************************************************************************************
 
@@ -200,4 +230,5 @@ public class KConfig
 	public ITEMS? Items { get; set; }
 	public WEAPON? Weapons { get; set; }
 	public PLAYER? Player { get; set; }
+	public RAIDS? Raids { get; set; }
 }
