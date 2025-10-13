@@ -222,7 +222,54 @@ public class RAIDS
 	/// Время выхода на машине
 	/// </summary>
 	public int CarExtractTime { get; set; }
+
+	/// <summary>
+	/// Вкл/выкл случайные ящики на локации
+	/// </summary>
+	public bool containerRandomisation { get; set; }
 }
+//************************************************************************************
+
+//************************************************************************************
+//************************Настройка барахолки*****************************************
+public class RAGFAIR
+{
+	/// <summary>
+	/// Вкл/выкл настройки барахолки
+	/// </summary>
+	public bool Enable { get; set; }
+
+	/// <summary>
+	/// Отключить чёрный список BSG
+	/// </summary>
+	public bool DisableBSGList { get; set; }
+
+	/// <summary>
+	/// Шанс продажи на барахолке
+	/// </summary>
+	public int Sell_chancet { get; set; }
+
+	/// <summary>
+	/// Шанс продажи за дорого
+	/// </summary>
+	public int Sell_overpricet { get; set; }
+
+	/// <summary>
+	/// Шанс продажи за дёшево
+	/// </summary>
+	public int Sell_underpricet { get; set; }
+
+	/// <summary>
+	/// Максимальное время
+	/// </summary>
+	public int Tradeoffer_max { get; set; }
+
+	/// <summary>
+	/// Минимальное время
+	/// </summary>
+	public int Tradeoffer_min { get; set; }
+}
+
 //************************************************************************************
 
 public class KConfig
@@ -231,4 +278,5 @@ public class KConfig
 	public WEAPON? Weapons { get; set; }
 	public PLAYER? Player { get; set; }
 	public RAIDS? Raids { get; set; }
+	public RAGFAIR Ragfair { get; set; }
 }

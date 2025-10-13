@@ -53,7 +53,10 @@ public class KMOD(
 		TraderConfig traderConfig = _configServer.GetConfig<TraderConfig>();
 		SPTarkov.Server.Core.Models.Eft.Common.Config globals = databaseService.GetGlobals().Configuration;		
 		BotConfig botConfig = _configServer.GetConfig<BotConfig>();
-		
+		SPTarkov.Server.Core.Models.Spt.Server.Locations mapsDb = databaseService.GetLocations();
+		Dictionary<string, SPTarkov.Server.Core.Models.Eft.Common.Location> mapsDict = mapsDb.GetDictionary();
+		LocationConfig LocationConfig = _configServer.GetConfig<LocationConfig>();
+		RagfairConfig Ragfair = _configServer.GetConfig<RagfairConfig>();
 
 		// ******************************************************************************
 		// Загружаем наши настройки
@@ -247,11 +250,9 @@ public class KMOD(
 			globals.SkillPointsBeforeFatigue = Config.Player?.Skills?.SkillPointsBeforeFatigue ?? 1;
 		}
 
+		// Настройка рейда
 		if( Config.Raids?.Enable == true )
 		{
-			var mapsDb = databaseService.GetLocations();
-			var mapsDict = mapsDb.GetDictionary();
-
 			// Выход с любой стороны
 			if( Config.Raids.ExtendedExtracts == true )
 			{
@@ -309,6 +310,7 @@ public class KMOD(
 						if( exit.PassageRequirement == SPTarkov.Server.Core.Models.Enums.RequirementState.Train )
 						{
 							exit.Chance = 100;
+							exit.ChancePVE = 100;
 						}
 					}
 				}
@@ -347,6 +349,31 @@ public class KMOD(
 					}
 				}
 			}
+
+			// Вкл/выкл случайные ящики на локации
+			LocationConfig.ContainerRandomisationSettings.Enabled = Config.Raids.containerRandomisation;
+		}
+
+		// Настройка барахолки
+		if( Config.Ragfair?.Enable == true )
+		{
+			// Отключить чёрный список BSG
+			Ragfair.Dynamic.Blacklist.EnableBsgList = Config.Ragfair.DisableBSGList != true;
+
+			// Шанс продажи на барахолке
+			Ragfair.Sell.Chance.Base = Config.Ragfair.Sell_chancet;
+
+			// Шанс продажи за дорого
+			Ragfair.Sell.Chance.MaxSellChancePercent = Config.Ragfair.Sell_overpricet;
+
+			// Шанс продажи за дёшево
+			Ragfair.Sell.Chance.MinSellChancePercent = Config.Ragfair.Sell_underpricet;
+
+			// Максимальное время
+			Ragfair.Sell.Time.Max = Config.Ragfair.Tradeoffer_max;
+
+			// Минимальное время
+			Ragfair.Sell.Time.Min = Config.Ragfair.Tradeoffer_min;
 		}
 
 		//logger.Info( "	------------------------------End" );
