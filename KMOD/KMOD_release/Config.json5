@@ -9,8 +9,12 @@
 		"HideoutConstMult":-1,				// Множитель времени постройки в убежище. Меньше - быстрее. При -1 мгновенная постройка
 		"HideoutProdMult":-1,				// Множитель времени производства. Меньше - быстрее		
 		"BitcoinSellOnRagfair": true,		// Возможность продавать биткоин на барахолке
-		"Surv12UseTime":10,					// Время применения Surv12. Указывать точное время в секундах
+		"CMSResource":10,					// Число использования CMS
 		"TraderPurchasesFoundInRaid":true,	// У всех торговцев товар "найден в рейде"
+		
+		"OpArmorRepair":true,				// Ремонт не изнашивает броню
+		"OpGunRepair":true,					// Ремонт не изнашивает оружие
+		"NoRandomRepair": true,				// Убрать элемент случайности при починке
 		
 		"SecureContainers":
 		{
@@ -33,9 +37,7 @@
 	},
 	"Weapons":
 	{
-		"Enable": true,						// Вкл/выкл
-		"OpArmorRepair":true,				// Ремонт не изнашивает броню
-		"OpGunRepair":true,					// Ремонт не изнашивает оружие
+		"Enable": true,						// Вкл/выкл		
 		"WeaponHeatOff":true,				// Без перегрева оружия		
 		"LoadUnloadModifier":-30,			// Отрицательное число уменьшает время заряда магазина	
 	},

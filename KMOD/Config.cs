@@ -83,9 +83,9 @@ public class ITEMS
 	public bool BitcoinSellOnRagfair { get; set; }
 
 	/// <summary>
-	/// Время применения Surv12
+	/// Число использования CMS
 	/// </summary>
-	public int Surv12UseTime { get; set; }
+	public int CMSResource { get; set; }
 
 	/// <summary>
 	/// У всех торговцев товар "найден в рейде"
@@ -101,6 +101,11 @@ public class ITEMS
 	/// Ремонт не изнашивает оружие
 	/// </summary>
 	public bool OpGunRepair { get; set; }
+
+	/// <summary>
+	/// Убрать элемент случайности при починке
+	/// </summary>
+	public bool NoRandomRepair { get; set; }
 
 	/// <summary>
 	/// Защищённый контейнер

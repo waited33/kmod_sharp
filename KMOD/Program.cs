@@ -138,9 +138,10 @@ public class KMOD(
 			}
 
 			// Время применения Surv12. Указывать точное время в секундах
-			if( Config.Items?.Surv12UseTime > 0 )
+			if( Config.Items?.CMSResource > 0 )
 			{
-				items[ ItemTpl.MEDICAL_SURV12_FIELD_SURGICAL_KIT ].Properties.MedUseTime = Config.Items?.Surv12UseTime;
+				//items[ ItemTpl.MEDICAL_SURV12_FIELD_SURGICAL_KIT ].Properties.MedUseTime = Config.Items?.Surv12UseTime;
+				items[ ItemTpl.MEDICAL_CMS_SURGICAL_KIT ].Properties.MaxHpResource = Config.Items?.CMSResource;
 			}
 
 			// У всех торговцев товар "найден в рейде"
@@ -152,12 +153,22 @@ public class KMOD(
 			// Ремонт не изнашивает броню
 			if( Config.Items?.OpArmorRepair == true )
 			{
-				foreach( var armormats in globals.ArmorMaterials.Values )
+				/*foreach( var armormats in globals.ArmorMaterials.Values )
 				{
 					armormats.MaxRepairDegradation = 0;
 					armormats.MinRepairDegradation = 0;
 					armormats.MaxRepairKitDegradation = 0;
 					armormats.MinRepairKitDegradation = 0;
+				}*/
+				foreach( TemplateItem basetemplate in items.Values )
+				{
+					if( basetemplate.Properties?.MaxRepairDegradation is not null && basetemplate.Properties.MaxRepairKitDegradation is not null )
+					{
+						basetemplate.Properties.MinRepairDegradation = 0;
+						basetemplate.Properties.MaxRepairDegradation = 0;
+						basetemplate.Properties.MinRepairKitDegradation = 0;
+						basetemplate.Properties.MaxRepairKitDegradation = 0;
+					}
 				}
 			}
 
@@ -166,12 +177,12 @@ public class KMOD(
 			{
 				foreach( var item in items.Values )
 				{
-					if( item.Properties?.MaxRepairDegradation != null && item.Properties.MaxRepairKitDegradation != null )
+					foreach( var armor in globals.ArmorMaterials )
 					{
-						item.Properties.MinRepairDegradation = 0;
-						item.Properties.MaxRepairDegradation = 0;
-						item.Properties.MinRepairKitDegradation = 0;
-						item.Properties.MaxRepairKitDegradation = 0;
+						armor.Value.MaxRepairDegradation = 0;
+						armor.Value.MinRepairDegradation = 0;
+						armor.Value.MaxRepairKitDegradation = 0;
+						armor.Value.MinRepairKitDegradation = 0;
 					}
 				}
 			}
@@ -306,8 +317,7 @@ public class KMOD(
 										
 					foreach( var exit in Map.Base.Exits )
 					{
-						//if( exit.Name != "EXFIL_Train" )
-						if( exit.PassageRequirement == SPTarkov.Server.Core.Models.Enums.RequirementState.Train )
+						if( exit.Chance is not null )
 						{
 							exit.Chance = 100;
 							exit.ChancePVE = 100;
@@ -336,11 +346,11 @@ public class KMOD(
 						{
 							exit.PassageRequirement = SPTarkov.Server.Core.Models.Enums.RequirementState.None;
 							exit.ExfiltrationType = SPTarkov.Server.Core.Models.Enums.ExfiltrationType.Individual;
-							exit.Id = "";
+							exit.Id = null;
 							exit.Count = 0;
 							exit.PlayersCount = 0;
 							exit.PlayersCountPVE = 0;
-							exit.RequirementTip = "";
+							exit.RequirementTip = "Free Exit";
 							if( exit.RequiredSlot != null )
 							{
 								exit.RequiredSlot = null;
