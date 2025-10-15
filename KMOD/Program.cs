@@ -17,6 +17,7 @@ using SPTarkov.Server.Core.Servers;
 using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace KMOD;
 
@@ -153,13 +154,6 @@ public class KMOD(
 			// Ремонт не изнашивает броню
 			if( Config.Items?.OpArmorRepair == true )
 			{
-				/*foreach( var armormats in globals.ArmorMaterials.Values )
-				{
-					armormats.MaxRepairDegradation = 0;
-					armormats.MinRepairDegradation = 0;
-					armormats.MaxRepairKitDegradation = 0;
-					armormats.MinRepairKitDegradation = 0;
-				}*/
 				foreach( TemplateItem basetemplate in items.Values )
 				{
 					if( basetemplate.Properties?.MaxRepairDegradation is not null && basetemplate.Properties.MaxRepairKitDegradation is not null )
@@ -211,7 +205,7 @@ public class KMOD(
 				}
 
 				// Процент уменьшения/увеличения времени зарядки магазина
-				if( Config.Weapons?.LoadUnloadModifier > 0 && baseItem.Parent == BaseClasses.MAGAZINE && baseItem.Properties?.LoadUnloadModifier != null )
+				if( Config.Weapons?.LoadUnloadModifier != 0 && baseItem.Parent == BaseClasses.MAGAZINE && baseItem.Properties?.LoadUnloadModifier != null )
 				{
 					baseItem.Properties.LoadUnloadModifier = Config.Weapons?.LoadUnloadModifier;
 				}
